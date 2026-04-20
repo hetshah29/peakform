@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition Guide – PeakForm</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.diet-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 1.85rem;
+  border-left: 4px solid var(--accent);
+  transition: border-color 0.3s;
+}
+.diet-card:hover { border-color: var(--accent); }
+.diet-card h3 { font-family:'Bebas Neue',cursive; font-size:1.5rem; letter-spacing:2px; margin-bottom:0.75rem; color:var(--accent); }
+.diet-card p { color:var(--muted); line-height:1.75; font-size:0.93rem; }
+.macro-bar { margin:0.85rem 0; }
+.macro-label { display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.85rem; font-weight:600; }
+.macro-track { height:7px; background:rgba(255,255,255,0.07); border-radius:4px; overflow:hidden; }
+.macro-fill { height:100%; border-radius:4px; }
+
+/* MACRO BLOCKS */
+.macro-blocks { display:flex; gap:1.5rem; flex-wrap:wrap; margin:2rem 0; }
+.macro-block {
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:12px;
+  padding:1.75rem 2.25rem;
+  text-align:center;
+  flex:1; min-width:160px;
+}
+.macro-pct { font-family:'Bebas Neue',cursive; font-size:3rem; line-height:1; }
+.macro-name { color:var(--muted); font-size:0.78rem; letter-spacing:2px; text-transform:uppercase; margin-top:0.4rem; }
+
+/* MEAL PLAN */
+.meal-plan { background:var(--bg3); border:1px solid var(--border2); border-radius:14px; overflow:hidden; margin-bottom:2rem; }
+.meal-plan-header { background:rgba(255,61,0,0.12); padding:1.1rem 1.6rem; font-family:'Bebas Neue',cursive; font-size:1.3rem; letter-spacing:2px; border-bottom:1px solid var(--border2); }
+.meal-row { padding:1.1rem 1.6rem; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; gap:1rem; }
+.meal-row:last-child { border-bottom:none; }
+.meal-time { font-size:0.78rem; color:var(--accent); font-weight:700; letter-spacing:1px; min-width:80px; text-transform:uppercase; flex-shrink:0; }
+.meal-desc { flex:1; color:var(--muted); font-size:0.92rem; line-height:1.5; }
+.meal-cal { color:var(--gold); font-weight:700; font-size:0.88rem; flex-shrink:0; }
+.meal-row.workout-row { background:rgba(255,61,0,0.04); }
+.meal-row.workout-row .meal-time { color:var(--gold); }
+.meal-row.workout-row .meal-desc { color:var(--text); font-weight:700; letter-spacing:1px; }
+
+/* SUPP GRID */
+.supp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.25rem; }
+.supp-card { background:var(--bg3); border:1px solid var(--border2); border-radius:12px; padding:1.6rem; transition:border-color 0.25s; }
+.supp-card:hover { border-color:var(--border); }
+.supp-card h4 { font-family:'Bebas Neue',cursive; font-size:1.2rem; letter-spacing:2px; color:var(--accent); margin-bottom:0.5rem; }
+.supp-card p { color:var(--muted); font-size:0.9rem; line-height:1.65; }
+
+/* CALORIE CALCULATOR */
+.calc-box { background:var(--bg3); border:1px solid var(--border2); border-radius:14px; padding:2rem; margin-bottom:2rem; }
+.calc-box h3 { font-family:'Bebas Neue',cursive; font-size:1.5rem; letter-spacing:2px; margin-bottom:1.5rem; }
+.calc-row { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; align-items:center; }
+.calc-row label { font-size:0.85rem; font-weight:700; color:var(--muted); letter-spacing:1px; min-width:100px; text-transform:uppercase; }
+.calc-row input, .calc-row select {
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  color:var(--text);
+  padding:0.65rem 1rem;
+  border-radius:8px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:1rem;
+  outline:none;
+  transition:border-color 0.2s;
+  width:180px;
+}
+.calc-row input:focus, .calc-row select:focus { border-color:var(--accent); }
+.calc-result { background:rgba(255,61,0,0.1); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin-top:1.5rem; display:none; }
+.calc-result.show { display:block; }
+.calc-result h4 { font-family:'Bebas Neue',cursive; font-size:1.3rem; letter-spacing:2px; margin-bottom:1rem; color:var(--accent); }
+.calc-nums { display:flex; gap:1.5rem; flex-wrap:wrap; }
+.calc-num { text-align:center; }
+.calc-num .n { font-family:'Bebas Neue',cursive; font-size:2rem; color:var(--text); display:block; }
+.calc-num .l { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>NUTRITION <span>GUIDE</span></h1>
+    <p>Precision nutrition protocols for muscle gain, fat loss, performance, and lifelong health</p>
+  </div>
+
+  <section class="section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="tab-btn" onclick="switchTab('bulking',this)">Bulking</button>
+      <button class="tab-btn" onclick="switchTab('cutting',this)">Cutting</button>
+      <button class="tab-btn" onclick="switchTab('meals',this)">Meal Plans</button>
+      <button class="tab-btn" onclick="switchTab('calculator',this)">Calculator</button>
+      <button class="tab-btn" onclick="switchTab('supps',this)">Supplements</button>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="section-title">NUTRITION <span>FOUNDATIONS</span></div>
+      <div class="divider"></div>
+      <div class="grid-auto" style="margin-bottom:3rem">
+        <div class="diet-card">
+          <h3>🔥 Total Calories</h3>
+          <p>Energy balance is the master variable. Your total calorie intake determines whether you gain, maintain, or lose weight. Calculate your TDEE and adjust ±300–500 calories based on your goal.</p>
+          <div class="macro-bar"><div class="macro-label"><span>Fat Loss (Deficit)</span><span>–500 kcal</span></div><div class="macro-track"><div class="macro-fill" style="width:45%;background:var(--accent)"></div></div></div>
+          <div class="macro-bar"><div class="macro-label"><span>Muscle Gain (Surplus)</span><span>+300 kcal</span></div><div class="macro-track"><div class="macro-fill" style="width:65%;background:var(--gold)"></div></div></div>
+        </div>
+        <div class="diet-card">
+          <h3>🥩 Protein — Build & Preserve</h3>
+          <p>The building block of muscle. Target 0.8–1g per lb of bodyweight daily. Spread across 4–5 meals for optimal muscle protein synthesis. Prioritize lean meats, eggs, dairy, fish, and legumes.</p>
+          <p style="margin-top:0.75rem;color:var(--accent);font-weight:700">Goal: 150–200g / day for 180lb athlete</p>
+        </div>
+        <div class="diet-card">
+          <h3>⚡ Carbohydrates — Fuel</h3>
+          <p>Your primary energy source. Time carbs around workouts for maximum performance and recovery. Choose complex carbs: oats, brown rice, sweet potatoes, whole grain bread, quinoa.</p>
+          <p style="margin-top:0.75rem;color:var(--gold);font-weight:700">Pre-workout: 30–50g fast carbs<br>Post-workout: 50–80g for glycogen replenishment</p>
+        </div>
+        <div class="diet-card">
+          <h3>🫒 Healthy Fats — Hormones</h3>
+          <p>Critical for testosterone and growth hormone production, joint health, and vitamin absorption. Include avocado, nuts, olive oil, fatty fish, and whole eggs. Never drop below 20% of calories.</p>
+          <p style="margin-top:0.75rem;color:var(--accent2);font-weight:700">Target: 0.4–0.5g per lb of bodyweight</p>
+        </div>
+        <div class="diet-card">
+          <h3>💧 Hydration — The Overlooked Key</h3>
+          <p>Muscle tissue is 75% water. Even 2% dehydration reduces strength and performance significantly. Drink 0.5–1oz per lb of bodyweight. Add electrolytes during sessions longer than 60 minutes.</p>
+          <p style="margin-top:0.75rem;color:var(--accent);font-weight:700">Minimum: 3–4 liters per day</p>
+        </div>
+        <div class="diet-card">
+          <h3>⏰ Meal Timing</h3>
+          <p>Eat every 3–4 hours to maintain muscle protein synthesis. Pre-workout meal 1–2 hours before training. Post-workout nutrition within 45 minutes. Avoid high-fat meals pre-workout as fat slows digestion.</p>
+        </div>
+      </div>
+      <div class="section-title">RECOMMENDED <span>MACRO SPLIT</span></div>
+      <div class="divider"></div>
+      <div class="macro-blocks">
+        <div class="macro-block"><div class="macro-pct" style="color:var(--accent)">40%</div><div class="macro-name">Protein</div></div>
+        <div class="macro-block"><div class="macro-pct" style="color:var(--gold)">40%</div><div class="macro-name">Carbohydrates</div></div>
+        <div class="macro-block"><div class="macro-pct" style="color:var(--accent2)">20%</div><div class="macro-name">Healthy Fats</div></div>
+      </div>
+    </div>
+
+    <!-- BULKING -->
+    <div id="tab-bulking" class="tab-content">
+      <div class="section-title">LEAN BULK <span>PROTOCOL</span></div>
+      <div class="divider"></div>
+      <div class="grid-auto">
+        <div class="diet-card"><h3>📈 Caloric Surplus</h3><p>Aim for +250–400 calories above TDEE. Aggressive bulks lead to excess fat gain. A lean bulk maximizes muscle while minimizing fat accumulation. Target 0.25–0.5 lb weight gain per week.</p></div>
+        <div class="diet-card"><h3>💪 Protein Priority</h3><p>1–1.2g per lb of bodyweight. Never sacrifice protein during a bulk. It's the raw material for every gram of new muscle. Distribute across 5–6 daily feedings for optimal synthesis.</p></div>
+        <div class="diet-card"><h3>🍚 Carb Cycling</h3><p>Higher carbs on training days (up to 3g/lb). Reduce by 25–30% on rest days. This nutrient timing maximizes glycogen storage for performance while minimizing unnecessary fat gain.</p></div>
+        <div class="diet-card"><h3>🍳 Best Bulk Foods</h3><p>Chicken breast, whole eggs, brown rice, oats, sweet potato, avocado, Greek yogurt, cottage cheese, whole milk, pasta, banana, whey protein, lean beef, salmon, quinoa.</p></div>
+        <div class="diet-card"><h3>📅 Bulk Duration</h3><p>Run a lean bulk for 12–20 weeks, then transition to a cut. This bulk-cut cycle is the most proven method for building a lean, muscular physique over time. Track progress monthly.</p></div>
+        <div class="diet-card"><h3>⚡ Peri-Workout Nutrition</h3><p>Pre: 30–50g carbs + 20g protein, 60–90 min before. Post: 40–60g carbs + 30–40g fast protein within 30–45 minutes. This is your most critical nutrition window of the entire day.</p></div>
+      </div>
+    </div>
+
+    <!-- CUTTING -->
+    <div id="tab-cutting" class="tab-content">
+      <div class="section-title">FAT LOSS <span>PROTOCOL</span></div>
+      <div class="divider"></div>
+      <div class="grid-auto">
+        <div class="diet-card"><h3>🔻 Caloric Deficit</h3><p>Create a 300–500 calorie deficit daily. Larger deficits risk muscle loss and hormonal disruption. Prioritize high-protein to preserve lean mass. Target 0.5–1 lb of fat loss per week maximum.</p></div>
+        <div class="diet-card"><h3>🛡️ Muscle Preservation</h3><p>Increase protein to 1–1.2g/lb during a cut. Higher-than-usual protein prevents muscle catabolism while in a caloric deficit. Resistance training is equally essential — never stop lifting.</p></div>
+        <div class="diet-card"><h3>🥦 Volume Eating</h3><p>Fill your plate with high-volume, low-calorie foods: leafy greens, cucumber, broccoli, cauliflower, zucchini, berries, mushrooms. These keep you full without breaking your calorie budget.</p></div>
+        <div class="diet-card"><h3>🚫 Foods to Minimize</h3><p>Liquid calories (juice, alcohol, soda), refined sugars, white bread, ultra-processed snacks, fast food, excessive cooking oils. Calorie-dense with low nutritional value — these sabotage a cut.</p></div>
+        <div class="diet-card"><h3>🔄 Refeed Days</h3><p>Every 1–2 weeks: bring calories to maintenance and spike carbs significantly. Replenishes glycogen, boosts leptin, improves mood and performance. Prevents metabolic adaptation to dieting.</p></div>
+        <div class="diet-card"><h3>💊 Cut Support Stack</h3><p>Creatine (strength maintenance), caffeine (performance + thermogenesis), protein powder (macro targets), omega-3 (inflammation), Vitamin D + Zinc (hormonal support through deficit).</p></div>
+      </div>
+    </div>
+
+    <!-- MEAL PLANS -->
+    <div id="tab-meals" class="tab-content">
+      <div class="section-title">SAMPLE <span>MEAL PLANS</span></div>
+      <div class="divider"></div>
+      <div class="meal-plan">
+        <div class="meal-plan-header">🏋️ MUSCLE GAIN DAY — ~3,200 kcal | 200g protein | 340g carbs | 80g fat</div>
+        <div class="meal-row"><div class="meal-time">6:30 AM</div><div class="meal-desc">5 whole eggs scrambled + 100g oats with banana + black coffee</div><div class="meal-cal">650 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">9:30 AM</div><div class="meal-desc">250g Greek yogurt + 30g almonds + 1 medium apple</div><div class="meal-cal">420 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">12:30 PM</div><div class="meal-desc">200g chicken breast + 200g brown rice + steamed broccoli + 1 tbsp olive oil</div><div class="meal-cal">680 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">3:00 PM</div><div class="meal-desc">Pre-workout: 1 banana + 30g whey protein in water</div><div class="meal-cal">280 kcal</div></div>
+        <div class="meal-row workout-row"><div class="meal-time">4:00 PM</div><div class="meal-desc">⚡ TRAINING SESSION (60–90 min)</div><div class="meal-cal">—</div></div>
+        <div class="meal-row"><div class="meal-time">5:30 PM</div><div class="meal-desc">Post-workout: 50g whey protein + 100g white rice + 1 banana</div><div class="meal-cal">480 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">8:00 PM</div><div class="meal-desc">200g salmon + 200g sweet potato + large salad + olive oil dressing</div><div class="meal-cal">620 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">10:00 PM</div><div class="meal-desc">200g cottage cheese + 20g natural peanut butter (before bed)</div><div class="meal-cal">280 kcal</div></div>
+      </div>
+      <div class="meal-plan">
+        <div class="meal-plan-header">🔥 FAT LOSS DAY — ~2,100 kcal | 190g protein | 200g carbs | 55g fat</div>
+        <div class="meal-row"><div class="meal-time">7:00 AM</div><div class="meal-desc">3 egg whites + 1 whole egg scrambled + 60g oats + mixed berries</div><div class="meal-cal">380 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">10:00 AM</div><div class="meal-desc">30g whey protein shake + 1 apple</div><div class="meal-cal">210 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">1:00 PM</div><div class="meal-desc">150g tuna + large mixed greens salad + cucumber + lemon dressing (no oil)</div><div class="meal-cal">350 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">4:00 PM</div><div class="meal-desc">Pre-workout: 30g rice cakes + 1 scoop protein powder</div><div class="meal-cal">220 kcal</div></div>
+        <div class="meal-row workout-row"><div class="meal-time">5:00 PM</div><div class="meal-desc">⚡ TRAINING SESSION (45–75 min)</div><div class="meal-cal">—</div></div>
+        <div class="meal-row"><div class="meal-time">6:30 PM</div><div class="meal-desc">150g chicken breast + large green salad + 1 tbsp olive oil + lemon</div><div class="meal-cal">420 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">9:00 PM</div><div class="meal-desc">200g low-fat Greek yogurt + cinnamon</div><div class="meal-cal">130 kcal</div></div>
+      </div>
+      <div class="meal-plan">
+        <div class="meal-plan-header">🌿 MAINTENANCE / RECOMP DAY — ~2,600 kcal | 195g protein | 270g carbs | 65g fat</div>
+        <div class="meal-row"><div class="meal-time">7:00 AM</div><div class="meal-desc">3 whole eggs + 80g oats + blueberries + coffee with splash of milk</div><div class="meal-cal">520 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">10:30 AM</div><div class="meal-desc">Protein shake (35g whey) + 30g mixed nuts</div><div class="meal-cal">350 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">1:00 PM</div><div class="meal-desc">180g chicken + 150g brown rice + mixed vegetables + olive oil</div><div class="meal-cal">580 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">4:00 PM</div><div class="meal-desc">Pre-workout: banana + 25g whey protein</div><div class="meal-cal">240 kcal</div></div>
+        <div class="meal-row workout-row"><div class="meal-time">5:00 PM</div><div class="meal-desc">⚡ TRAINING SESSION</div><div class="meal-cal">—</div></div>
+        <div class="meal-row"><div class="meal-time">6:30 PM</div><div class="meal-desc">Post-workout: 35g whey + 80g white rice</div><div class="meal-cal">340 kcal</div></div>
+        <div class="meal-row"><div class="meal-time">8:30 PM</div><div class="meal-desc">170g salmon + roasted vegetables + small sweet potato</div><div class="meal-cal">440 kcal</div></div>
+      </div>
+    </div>
+
+    <!-- CALORIE CALCULATOR -->
+    <div id="tab-calculator" class="tab-content">
+      <div class="section-title">CALORIE <span>CALCULATOR</span></div>
+      <div class="divider"></div>
+      <div class="calc-box">
+        <h3>🧮 TDEE & MACRO CALCULATOR</h3>
+        <div class="calc-row"><label>Weight (kg)</label><input type="number" id="weight" placeholder="75" min="30" max="200"></div>
+        <div class="calc-row"><label>Height (cm)</label><input type="number" id="height" placeholder="175" min="140" max="220"></div>
+        <div class="calc-row"><label>Age</label><input type="number" id="age" placeholder="25" min="16" max="80"></div>
+        <div class="calc-row"><label>Gender</label>
+          <select id="gender"><option value="male">Male</option><option value="female">Female</option></select>
+        </div>
+        <div class="calc-row"><label>Activity</label>
+          <select id="activity" style="width:240px">
+            <option value="1.2">Sedentary (desk job, no exercise)</option>
+            <option value="1.375">Light (1–3 days/week)</option>
+            <option value="1.55" selected>Moderate (3–5 days/week)</option>
+            <option value="1.725">Very Active (6–7 days/week)</option>
+            <option value="1.9">Athlete (2x daily training)</option>
+          </select>
+        </div>
+        <div class="calc-row"><label>Goal</label>
+          <select id="goal">
+            <option value="cut">Fat Loss (–500 kcal)</option>
+            <option value="maintain">Maintain</option>
+            <option value="bulk" selected>Muscle Gain (+300 kcal)</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="calculate()" style="margin-top:0.5rem">CALCULATE MY MACROS</button>
+        <div class="calc-result" id="calcResult">
+          <h4>YOUR PERSONALIZED MACRO TARGETS</h4>
+          <div class="calc-nums" id="calcNums"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUPPLEMENTS -->
+    <div id="tab-supps" class="tab-content">
+      <div class="section-title">SUPPLEMENT <span>STACK</span></div>
+      <div class="divider"></div>
+      <div class="supp-grid">
+        <div class="supp-card"><h4>🏆 Whey Protein</h4><p>The gold standard. Fast-absorbing post-workout protein. 25–30g per serving. Whey isolate for higher purity. Essential for hitting daily protein targets efficiently.</p></div>
+        <div class="supp-card"><h4>⚡ Creatine Monohydrate</h4><p>Most researched supplement. 5g daily (no loading needed). Increases strength, power output, and muscle cell hydration. Safe for long-term use. Non-negotiable in any stack.</p></div>
+        <div class="supp-card"><h4>☕ Caffeine</h4><p>3–6mg/kg bodyweight, 30–60 min pre-workout. Improves focus, strength, and endurance. Best cycled 5 days on / 2 off to maintain sensitivity. Avoid after 2pm.</p></div>
+        <div class="supp-card"><h4>🐟 Omega-3 Fish Oil</h4><p>2–3g EPA+DHA daily. Reduces inflammation, supports joint health, improves recovery, aids cardiovascular health. Take with meals to avoid aftertaste.</p></div>
+        <div class="supp-card"><h4>☀️ Vitamin D3 + K2</h4><p>5,000 IU D3 + 100mcg K2 daily. Critical for testosterone production, immune function, and calcium metabolism. Most athletes are chronically deficient.</p></div>
+        <div class="supp-card"><h4>🌙 Magnesium Glycinate</h4><p>400mg before bed. Improves sleep quality, reduces muscle cramps, supports 300+ enzymatic processes including protein synthesis. Game-changing for recovery.</p></div>
+        <div class="supp-card"><h4>🧪 Beta-Alanine</h4><p>3.2–6.4g daily. Buffers lactic acid, extending muscular endurance. Ideal for high-rep training and conditioning work. Tingling (paresthesia) is normal and harmless.</p></div>
+        <div class="supp-card"><h4>🔬 Zinc</h4><p>25–45mg daily with food. Directly tied to testosterone levels. Depleted by heavy sweating. Pair with magnesium for maximum hormonal support and recovery enhancement.</p></div>
+        <div class="supp-card"><h4>🌿 Ashwagandha (KSM-66)</h4><p>600mg daily. Adaptogen that reduces cortisol, improves recovery, and has been shown to increase testosterone and muscle strength in clinical trials.</p></div>
+        <div class="supp-card"><h4>💊 Collagen + Vitamin C</h4><p>10–15g collagen peptides + 500mg Vitamin C before training. Directly supports tendon, ligament, and joint repair. Essential for longevity and injury prevention.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness | <a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a></p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+<script>
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function calculate(){
+  const w = parseFloat(document.getElementById('weight').value);
+  const h = parseFloat(document.getElementById('height').value);
+  const a = parseFloat(document.getElementById('age').value);
+  const g = document.getElementById('gender').value;
+  const act = parseFloat(document.getElementById('activity').value);
+  const goal = document.getElementById('goal').value;
+
+  if(!w||!h||!a){ alert('Please fill in all fields.'); return; }
+
+  let bmr = g==='male'
+    ? 10*w + 6.25*h - 5*a + 5
+    : 10*w + 6.25*h - 5*a - 161;
+
+  let tdee = Math.round(bmr * act);
+  let target = tdee;
+  if(goal==='cut') target = tdee - 500;
+  if(goal==='bulk') target = tdee + 300;
+
+  const protein = Math.round(w * 2.2);
+  const fat = Math.round(target * 0.22 / 9);
+  const carbs = Math.round((target - protein*4 - fat*9) / 4);
+
+  document.getElementById('calcNums').innerHTML = `
+    <div class="calc-num"><span class="n" style="color:var(--accent)">${tdee}</span><span class="l">TDEE (kcal)</span></div>
+    <div class="calc-num"><span class="n" style="color:var(--gold)">${target}</span><span class="l">Target (kcal)</span></div>
+    <div class="calc-num"><span class="n" style="color:var(--accent)">${protein}g</span><span class="l">Protein</span></div>
+    <div class="calc-num"><span class="n" style="color:var(--gold)">${carbs}g</span><span class="l">Carbs</span></div>
+    <div class="calc-num"><span class="n" style="color:var(--accent2)">${fat}g</span><span class="l">Fats</span></div>
+  `;
+  document.getElementById('calcResult').classList.add('show');
+}
+</script>
+</body>
+</html>

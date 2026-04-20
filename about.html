@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – PeakForm</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.about-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+@media(max-width:800px){ .about-hero{grid-template-columns:1fr} }
+.about-text h2 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.2rem,4vw,3.2rem);
+  letter-spacing: 3px;
+  margin-bottom: 1.25rem;
+  line-height: 1.05;
+}
+.about-text h2 span { color: var(--accent); }
+.about-text p { color: var(--muted); line-height: 1.85; margin-bottom: 1rem; font-size: 0.97rem; }
+.about-visual {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.about-visual::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,61,0,0.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,61,0,0.05) 1px,transparent 1px);
+  background-size:30px 30px;
+}
+.logo-huge {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 4.5rem;
+  color: var(--accent);
+  letter-spacing: 6px;
+  line-height: 0.95;
+  position: relative; z-index: 1;
+}
+.logo-huge span { color: var(--text); display: block; }
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  position: relative; z-index: 1;
+}
+.about-stat {
+  background: rgba(255,61,0,0.08);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+.about-stat .n { font-family:'Bebas Neue',cursive; font-size:2rem; color:var(--accent); display:block; line-height:1; }
+.about-stat .l { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; display:block; margin-top:0.25rem; }
+
+/* VALUES */
+.values-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1.5rem; margin-bottom:4rem; }
+.value-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 1.85rem;
+  border-top: 3px solid var(--accent);
+  transition: border-color 0.3s;
+}
+.value-card:hover { border-color: var(--accent); }
+.value-icon { font-size:2rem; margin-bottom:1rem; }
+.value-card h3 { font-family:'Bebas Neue',cursive; font-size:1.35rem; letter-spacing:2px; margin-bottom:0.5rem; }
+.value-card p { color:var(--muted); font-size:0.9rem; line-height:1.65; }
+
+/* TEAM */
+.team-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1.5rem; margin-bottom:4rem; }
+.team-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+.team-card:hover { border-color: var(--border); }
+.team-avatar {
+  width: 86px; height: 86px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 auto 1.1rem;
+  border: 3px solid rgba(255,61,0,0.3);
+}
+.team-name { font-family:'Bebas Neue',cursive; font-size:1.35rem; letter-spacing:2px; margin-bottom:0.3rem; }
+.team-role { color:var(--accent); font-size:0.8rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.85rem; }
+.team-card p { color:var(--muted); font-size:0.88rem; line-height:1.65; }
+
+/* CONTACT */
+.contact-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem; }
+.contact-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: border-color 0.3s;
+}
+.contact-card:hover { border-color: var(--border); }
+.contact-icon-box {
+  width: 56px; height: 56px;
+  border-radius: 12px;
+  background: rgba(255,61,0,0.1);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.contact-info h4 { font-family:'Bebas Neue',cursive; font-size:1.15rem; letter-spacing:2px; margin-bottom:0.3rem; }
+.contact-info a { color:var(--accent); text-decoration:none; font-size:0.95rem; }
+.contact-info a:hover { text-decoration: underline; }
+.contact-info span { color:var(--muted); font-size:0.9rem; }
+
+/* BADGE STRIP */
+.badge-strip { display:flex; gap:1rem; flex-wrap:wrap; margin:2rem 0; }
+.badge-item {
+  background: rgba(255,61,0,0.08);
+  border: 1px solid var(--border);
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* STORY */
+.story-block {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  border-left: 5px solid var(--accent);
+}
+.story-block h3 { font-family:'Bebas Neue',cursive; font-size:1.8rem; letter-spacing:2px; margin-bottom:1rem; }
+.story-block p { color:var(--muted); line-height:1.85; margin-bottom:0.85rem; font-size:0.97rem; }
+
+/* CTA BOX */
+.cta-box {
+  background: linear-gradient(135deg, rgba(255,61,0,0.12), rgba(255,107,53,0.06));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+}
+.cta-box h3 { font-family:'Bebas Neue',cursive; font-size:2.2rem; letter-spacing:3px; margin-bottom:0.85rem; }
+.cta-box h3 span { color:var(--accent); }
+.cta-box p { color:var(--muted); margin-bottom:1.75rem; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>ABOUT <span>PEAKFORM</span></h1>
+    <p>Built by athletes, for athletes — science-backed fitness knowledge for every level</p>
+  </div>
+
+  <section class="section">
+
+    <!-- HERO ABOUT -->
+    <div class="about-hero">
+      <div class="about-text">
+        <h2>WE BELIEVE IN <span>SCIENCE-BACKED</span> TRAINING</h2>
+        <p>PeakForm was founded with one mission: to cut through the noise of fitness misinformation and deliver evidence-based training, nutrition, and recovery knowledge to every athlete — from complete beginner to seasoned competitor.</p>
+        <p>In a world full of gimmicks, quick fixes, and contradictory advice, we go back to first principles. Every workout guide, every nutrition protocol, and every recovery recommendation on PeakForm is grounded in sports science research and real-world athletic performance.</p>
+        <p>We built the AI Professor to give you access to a knowledgeable training partner, available 24 hours a day — answering your questions, adapting advice to your situation, and keeping you on track toward your goals no matter where you are in the world.</p>
+        <div class="badge-strip">
+          <div class="badge-item">💪 200+ Exercises</div>
+          <div class="badge-item">🥗 Nutrition Science</div>
+          <div class="badge-item">😴 Recovery Protocols</div>
+          <div class="badge-item">🤖 AI Coaching</div>
+          <div class="badge-item">🔥 90-Day Program</div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="logo-huge">PEAK<span>FORM</span></div>
+        <p style="color:var(--muted);margin-top:1rem;font-size:0.85rem;letter-spacing:2px;position:relative;z-index:1;text-transform:uppercase">Elite Fitness Platform</p>
+        <div class="about-stats">
+          <div class="about-stat"><span class="n">200+</span><span class="l">Exercises</span></div>
+          <div class="about-stat"><span class="n">8</span><span class="l">Muscle Groups</span></div>
+          <div class="about-stat"><span class="n">90</span><span class="l">Day Program</span></div>
+          <div class="about-stat"><span class="n">24/7</span><span class="l">AI Support</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUR STORY -->
+    <div class="section-title">OUR <span>STORY</span></div>
+    <div class="divider"></div>
+    <div class="story-block">
+      <h3>From Confusion to Clarity</h3>
+      <p>PeakForm was born from frustration. The fitness industry is drowning in conflicting advice, questionable influencers, and programs designed to extract money rather than deliver results. We saw athletes — motivated, committed people — wasting years of effort on ineffective methods simply because they didn't have access to correct information.</p>
+      <p>We built PeakForm to be different. Every piece of content is created with a clear standard: it must be supported by exercise science, proven in real training environments, and communicated in a way that's immediately actionable. No fluff. No gimmicks. No overcomplicated protocols that look impressive but deliver nothing.</p>
+      <p>The result is a platform where every exercise comes with proper form guidance and physiological reasoning, where every nutrition recommendation is calculated and evidence-based, and where our AI Professor can engage with your specific situation in real time. PeakForm is the resource we wish we had when we started.</p>
+    </div>
+
+    <!-- VALUES -->
+    <div class="section-title">OUR <span>CORE VALUES</span></div>
+    <div class="divider"></div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🔬</div>
+        <h3>Science First</h3>
+        <p>Every recommendation is backed by peer-reviewed research and validated through real-world athletic application. We cite our sources and update when new evidence emerges.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🎯</div>
+        <h3>Results Focused</h3>
+        <p>We design programs that deliver measurable, visible results. Progress is tracked, tested, and celebrated — not hidden behind vague promises.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <h3>Accessible to All</h3>
+        <p>Elite knowledge shouldn't cost a fortune. PeakForm's core content is comprehensive and free — we believe everyone deserves access to quality fitness education.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <h3>Relentless Improvement</h3>
+        <p>We update our content constantly as new research emerges. Fitness science never stops evolving — and neither do we. What works is what matters.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🛡️</div>
+        <h3>Safety Always</h3>
+        <p>Performance without injury is the goal. Every program includes proper warm-ups, deload weeks, and form cues because longevity in training is the real foundation of results.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌍</div>
+        <h3>Global Community</h3>
+        <p>PeakForm users span every country, background, and fitness level. We build for the entire spectrum — from beginner to elite athlete — with zero judgment.</p>
+      </div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="section-title">THE <span>TEAM</span></div>
+    <div class="divider"></div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👨‍💼</div>
+        <div class="team-name">Het Shah</div>
+        <div class="team-role">Founder & CEO</div>
+        <p>Passionate fitness entrepreneur committed to democratizing elite athletic knowledge. Built PeakForm to create the resource he wished existed.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🧬</div>
+        <div class="team-name">Dr. Alex Reid</div>
+        <div class="team-role">Lead Sports Scientist</div>
+        <p>PhD in Exercise Physiology with 12 years researching hypertrophy, strength programming, and sports nutrition. Designs all PeakForm training protocols.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🥗</div>
+        <div class="team-name">Maya Patel</div>
+        <div class="team-role">Head of Nutrition</div>
+        <p>Registered Dietitian specializing in sports performance and body recomposition. Developed all meal plans, macro targets, and supplement protocols.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🤖</div>
+        <div class="team-name">Professor AI</div>
+        <div class="team-role">AI Training Coach</div>
+        <p>PeakForm's embedded AI coach — trained on sports science literature and real coaching data. Available 24/7 for any fitness question you can throw at it.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🏋️</div>
+        <div class="team-name">Carlos Vega</div>
+        <div class="team-role">Master Trainer & Coach</div>
+        <p>NSCA-CSCS certified. 15 years coaching elite athletes and bodybuilders. All exercise form cues and programming notes are validated by Carlos personally.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">💻</div>
+        <div class="team-name">Platform Team</div>
+        <div class="team-role">Tech & Design</div>
+        <p>The builders behind PeakForm's interface — making world-class fitness knowledge as accessible, intuitive, and visually compelling as possible.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="section-title">CONTACT <span>US</span></div>
+    <div class="divider"></div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon-box">📧</div>
+        <div class="contact-info">
+          <h4>Email Us</h4>
+          <a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon-box">🤖</div>
+        <div class="contact-info">
+          <h4>AI Professor</h4>
+          <a onclick="openAI(); return false;" href="#" style="cursor:pointer">Chat with Professor now →</a>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon-box">📍</div>
+        <div class="contact-info">
+          <h4>Location</h4>
+          <span>India — Available Globally</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon-box">⏰</div>
+        <div class="contact-info">
+          <h4>Response Time</h4>
+          <span>Email: within 24 hours<br>AI Professor: instant, 24/7</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>READY TO REACH YOUR <span>PEAK?</span></h3>
+      <p>Join thousands of athletes who've transformed their bodies using PeakForm's science-backed programs.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="challenge.html" class="btn-primary">Start 90-Day Challenge</a>
+        <a href="workout.html" class="btn-secondary">Explore Workouts</a>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness. All rights reserved.</p>
+    <p><a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a> · India</p>
+    <p style="margin-top:0.75rem;font-size:0.8rem">Designed with ❤️ for athletes everywhere</p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

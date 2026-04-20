@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workout Guide – PeakForm</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── MUSCLE GRID ── */
+.muscle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1.75rem;
+}
+.muscle-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.35s;
+  position: relative;
+}
+.muscle-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(255,61,0,0.18);
+}
+.muscle-card-img {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+.muscle-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(10%) contrast(1.12);
+  transition: transform 0.5s;
+}
+.muscle-card:hover .muscle-card-img img { transform: scale(1.08); }
+.muscle-card-img .img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(10,10,10,0.88) 100%);
+}
+.muscle-card-img .muscle-label {
+  position: absolute;
+  bottom: 1rem; left: 1.25rem;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+.muscle-card-img .muscle-badge {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: rgba(255,61,0,0.85);
+  color: #fff;
+  padding: 0.25rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+.muscle-card-body { padding: 1.4rem 1.5rem; }
+.muscle-card-body p { color: var(--muted); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem; }
+.muscle-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.muscle-card-footer span { color: var(--muted); font-size: 0.82rem; }
+.muscle-card-footer .arrow { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+/* ── DETAIL VIEW ── */
+#detailView { display: none; }
+#detailView.show { display: block; }
+#muscleGrid.hide { display: none; }
+
+.detail-hero {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.detail-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: grayscale(10%) contrast(1.1);
+}
+.detail-hero .detail-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.4) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 2.5rem 6%;
+}
+.detail-hero-text h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.8rem,6vw,4.5rem);
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.detail-hero-text h1 span { color: var(--accent); }
+.detail-hero-text p { color: rgba(255,255,255,0.65); font-size: 0.95rem; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,61,0,0.12);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 0.55rem 1.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  margin-bottom: 2.5rem;
+}
+.back-btn:hover { background: rgba(255,61,0,0.22); }
+
+/* ── EXERCISE CARDS ── */
+.exercise-grid { display: grid; gap: 1.5rem; }
+.exercise-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  transition: border-color 0.3s;
+}
+.exercise-card:hover { border-color: var(--border); }
+@media(max-width:800px){ .exercise-card{grid-template-columns:1fr} }
+.exercise-photo {
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+.exercise-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(15%) contrast(1.1);
+  transition: transform 0.4s;
+}
+.exercise-card:hover .exercise-photo img { transform: scale(1.05); }
+.exercise-photo .ex-num {
+  position: absolute;
+  top: 0.75rem; left: 0.75rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.exercise-body { padding: 1.75rem; display: flex; flex-direction: column; justify-content: center; }
+.exercise-body h3 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+.exercise-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+.ex-tag {
+  background: rgba(255,61,0,0.1);
+  border: 1px solid rgba(255,61,0,0.25);
+  color: var(--accent2);
+  padding: 0.18rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.ex-tag.gold { background: rgba(245,166,35,0.1); border-color: rgba(245,166,35,0.25); color: var(--gold); }
+.exercise-body p { color: var(--muted); font-size: 0.93rem; line-height: 1.7; }
+
+/* ── MUSCLE SELECTOR ── */
+.muscle-selector {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding: 1.25rem;
+  background: var(--bg3);
+  border-radius: 12px;
+  border: 1px solid var(--border2);
+}
+.ms-btn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.ms-btn:hover, .ms-btn.active {
+  background: rgba(255,61,0,0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>WORKOUT <span>GUIDE</span></h1>
+    <p>Complete exercise library — 8 muscle groups, 64+ exercises with bodybuilder demonstrations</p>
+  </div>
+
+  <!-- MUSCLE GROUP GRID -->
+  <section class="section" id="mainSection">
+    <div class="section-sub">Select a Muscle Group</div>
+    <div class="section-title">TRAIN <span>EVERY MUSCLE</span></div>
+    <div class="divider"></div>
+    <div class="muscle-grid" id="muscleGrid"></div>
+  </section>
+
+  <!-- DETAIL VIEW -->
+  <div id="detailView">
+    <div class="detail-hero">
+      <img id="detailHeroImg" src="" alt="">
+      <div class="detail-overlay">
+        <div class="detail-hero-text">
+          <h1 id="detailTitle"></h1>
+          <p id="detailSub"></p>
+        </div>
+      </div>
+    </div>
+    <section class="section">
+      <button class="back-btn" onclick="closeDetail()">← Back to Muscle Groups</button>
+      <div class="exercise-grid" id="exerciseGrid"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness | <a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a></p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+<script>
+const muscles = [
+  {
+    id:'chest',
+    name:'CHEST',
+    tag:'Pushing Power',
+    desc:'Pectoralis major & minor — the primary horizontal pushing muscles responsible for chest width and thickness.',
+    heroImg:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',
+    exercises:[
+      {name:'Barbell Bench Press',target:'Pectoralis Major (Sternal Head)',sets:'4×5–8',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'The king of chest exercises. Lie flat on bench, grip slightly wider than shoulders. Lower bar controlled to mid-chest, press explosively. Arch naturally, drive feet into floor for full-body tension. The #1 mass builder for overall chest.'},
+      {name:'Incline Dumbbell Press',target:'Upper Chest (Clavicular Head)',sets:'3×10–12',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',desc:'Set bench to 30–45°. Press dumbbells up and slightly inward. Directly targets the underdeveloped upper chest for a full, rounded appearance. Elbows at 45° angle — not flared completely out.'},
+      {name:'Cable Crossover',target:'Inner Chest / Striations',sets:'3×15–20',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Set cables at shoulder or above height. Pull handles together and cross at the bottom. Peak squeeze 1 second. Creates center-chest detail and separation that defines an advanced physique.'},
+      {name:'Dumbbell Flyes',target:'Chest Stretch & Outer Pec',sets:'3×12–15',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Arms slightly bent, lower in a wide arc feeling deep pectoral stretch. Squeeze at top. Isolates chest without tricep involvement. Best for outer chest width and improving mind-muscle connection.'},
+      {name:'Decline Bench Press',target:'Lower Chest (Costal Head)',sets:'3×10–12',img:'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=600&q=80',desc:'Bench at –15 to –30°. Targets lower chest creating definition at the bottom. Builds the chest-abdominal tie-in and overall fullness. Use a spotter for safety.'},
+      {name:'Chest Dips',target:'Lower Pecs & Triceps',sets:'3×10–15',img:'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=600&q=80',desc:'Lean forward significantly to shift emphasis to chest. Full range — go deep for maximum stretch. Add weight with belt as you progress. One of the best lower chest mass builders available.'},
+      {name:'Push-Up Variations',target:'Full Chest, Anterior Delt, Triceps',sets:'4×max',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Standard, wide, close-grip, decline, and archer push-ups. Builds endurance and athleticism alongside strength. Perfect as warm-up, home training, or brutal finisher.'},
+      {name:'Pec Deck Machine',target:'Pecs — Peak Contraction',sets:'3×15',img:'https://images.unsplash.com/photo-1567013127542-490d757e6349?w=600&q=80',desc:'Controlled arc motion, elbows slightly bent. Squeeze and hold at peak for 1 second. Machines maintain constant tension. Excellent for pump work and beginners learning chest activation.'}
+    ]
+  },
+  {
+    id:'back',
+    name:'BACK',
+    tag:'Pulling Muscles',
+    desc:'Latissimus dorsi, rhomboids, traps, and spinal erectors — the muscles that create width, thickness, and a powerful posterior chain.',
+    heroImg:'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=600&q=80',
+    exercises:[
+      {name:'Deadlift',target:'Full Back, Glutes, Hamstrings, Traps',sets:'4×3–6',img:'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=600&q=80',desc:'The most powerful compound movement in existence. Hinge at hips, flat back, bar over mid-foot. Drive through the floor, lock hips at top. Builds total body mass like nothing else. Non-negotiable.'},
+      {name:'Pull-Ups / Chin-Ups',target:'Lats, Biceps, Rear Delts',sets:'4×6–12',img:'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600&q=80',desc:'Dead hang, pull chest to bar — elbows drive down and back. Chin-ups (supine) emphasize biceps, pull-ups (prone) emphasize lats. The ultimate upper body pulling test.'},
+      {name:'Barbell Bent-Over Row',target:'Lats, Rhomboids, Mid Traps',sets:'4×6–10',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Hinge to 45°. Row bar to lower sternum, elbows drive back hard. The king of back thickness — builds the kind of mass that only heavy rowing creates. Essential compound move.'},
+      {name:'Single-Arm Dumbbell Row',target:'Lats, Rhomboids, Teres Major',sets:'3×10–12 each',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'Knee and hand on bench. Row from full stretch to hip level. Superior range of motion versus barbell row. Fixes left-right imbalances that bilateral training misses.'},
+      {name:'Lat Pulldown',target:'Latissimus Dorsi — Width',sets:'4×10–12',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Wide pronated grip. Pull to upper chest leaning back slightly — elbows drive toward hips. Perfect for building lat width. The go-to for those working toward pull-ups.'},
+      {name:'Seated Cable Row',target:'Mid-Back, Rhomboids — Thickness',sets:'3×12–15',img:'https://images.unsplash.com/photo-1567013127542-490d757e6349?w=600&q=80',desc:'Sit tall, neutral spine. Row handle to lower abs, squeeze shoulder blades together. Control the return to full extension. Builds mid-back thickness responsible for that dense, "blocked" look from the rear.'},
+      {name:'Face Pull',target:'Rear Delts, Rotator Cuff, Upper Traps',sets:'3×20–25',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Cable at eye height. Pull to face while rotating hands outward — elbows flare up. Critical for shoulder health, posture correction, and rear delt development. Do this every session.'},
+      {name:'T-Bar Row',target:'Lats, Rhomboids, Spinal Erectors',sets:'3×8–10',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Straddle the bar, row to chest. Allows heavy loading for significant back mass. Excellent mid-back and lat thickness builder — a staple in any serious back program.'}
+    ]
+  },
+  {
+    id:'shoulders',
+    name:'SHOULDERS',
+    tag:'All 3 Deltoid Heads',
+    desc:'Anterior, lateral, and posterior deltoids — the three-headed muscle that creates width, roundness, and the coveted V-taper silhouette.',
+    heroImg:'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=600&q=80',
+    exercises:[
+      {name:'Overhead Barbell Press',target:'All Deltoid Heads, Upper Traps',sets:'4×5–8',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',desc:'Standing or seated. Press bar from chin level overhead to full lockout. The primary shoulder mass builder. Requires core stabilization. Builds thick, powerful shoulders and engages upper traps.'},
+      {name:'Dumbbell Lateral Raise',target:'Lateral (Side) Deltoid',sets:'4×15–20',img:'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=600&q=80',desc:'Arms slightly bent, raise to shoulder height with pinkies slightly higher. THE only exercise that truly isolates the lateral delt — the muscle that creates shoulder width and the V-taper. Control the descent.'},
+      {name:'Arnold Press',target:'All 3 Deltoid Heads Combined',sets:'3×10–12',img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',desc:'Start with palms facing you, press and rotate to palms-forward overhead. Invented by Arnold himself. Hits all three deltoid heads in one movement — excellent for complete shoulder development.'},
+      {name:'Rear Delt Fly',target:'Posterior (Rear) Deltoid',sets:'3×15–20',img:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=600&q=80',desc:'Bent over at 45°. Raise dumbbells out to sides with slight elbow bend. Most lifters neglect rear delts — causing rounded shoulders and posture problems. Essential for balanced development.'},
+      {name:'Cable Lateral Raise',target:'Lateral Deltoid — Constant Tension',sets:'3×15–20',img:'https://images.unsplash.com/photo-1567013127542-490d757e6349?w=600&q=80',desc:'Cable from low pulley. Raise across body to shoulder height. Unlike dumbbells, cables provide constant tension throughout — no easy zone at the bottom. Superior for lateral delt isolation.'},
+      {name:'Upright Row',target:'Lateral Delts, Upper Traps',sets:'3×12',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Bar or dumbbells, pull to chin level, elbows lead and flare high. Wide grip for shoulder emphasis, narrow for traps. Builds lateral delt and trap thickness. Use moderate weight.'},
+      {name:'Dumbbell Front Raise',target:'Anterior (Front) Deltoid',sets:'2×15',img:'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600&q=80',desc:'Raise dumbbells to eye level, slight bend in elbows. Most lifters get sufficient front delt stimulation from pressing. Use as accessory only if anterior delts are a specific weak point.'},
+      {name:'Face Pull (Shoulder Health)',target:'Rear Delts, External Rotators',sets:'3×20',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'High cable, rope attachment. Pull to face driving elbows up and rotating hands out. Non-negotiable for shoulder health. Strengthens rotator cuff, corrects internal rotation from heavy pressing.'}
+    ]
+  },
+  {
+    id:'biceps',
+    name:'BICEPS',
+    tag:'Arm Flexors',
+    desc:'Biceps brachii (long & short head) and brachialis — the muscles that create arm peak, thickness, and that dramatic flexed silhouette.',
+    heroImg:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=600&q=80',
+    exercises:[
+      {name:'Barbell Curl',target:'Biceps Brachii — Both Heads',sets:'4×8–12',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Shoulder-width grip, elbows pinned to sides. Curl to chin, squeeze hard, 3-second negative. The mass builder. Use strict form — no swinging. Heavy and controlled for maximum hypertrophy.'},
+      {name:'Hammer Curl',target:'Brachialis, Brachioradialis',sets:'3×12',img:'https://images.unsplash.com/photo-1581009137042-c552e485697a?w=600&q=80',desc:'Neutral (thumbs-up) grip throughout. Targets the brachialis beneath the bicep — when developed, it pushes the bicep up making it appear dramatically taller. Essential for arm size and thickness.'},
+      {name:'Incline Dumbbell Curl',target:'Bicep Long Head — Peak',sets:'3×12',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Sit on incline bench, arms hang behind body — superior stretch position. Maximally loads the long head. Creates the bicep peak when flexing. A must for that impressive arm profile from the side.'},
+      {name:'Concentration Curl',target:'Bicep Long Head — Peak Isolation',sets:'3×12–15',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'Elbow braced on inner thigh. Curl with full supination. Maximizes tension at peak contraction. Excellent for mind-muscle connection and developing the long head peak.'},
+      {name:'Cable Curl',target:'Biceps — Constant Tension',sets:'3×15',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Cable from low pulley maintains constant tension — unlike free weights that lose tension at the bottom. Excellent for pump-focused training and pre-exhaust protocols before compound work.'},
+      {name:'Preacher Curl',target:'Short Head — Lower Bicep Belly',sets:'3×10–12',img:'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=600&q=80',desc:'Pad under armpits, arms fully extended at bottom. Eliminates shoulder involvement. Targets the lower bicep belly and creates separation from the forearm. Best for bicep mass near the elbow.'},
+      {name:'Reverse Curl',target:'Brachialis & Forearms',sets:'2×15',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Pronated (overhand) grip curl. Primarily works brachialis and forearms. Builds the forearm mass visible from the front. Important for complete arm development and grip strength.'},
+      {name:'21s',target:'Full Bicep Range — Advanced',sets:'3×21',img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',desc:'7 reps lower half, 7 reps upper half, 7 full range = 21 total. Exhausts the bicep at every angle. An advanced finisher that creates incredible pump and metabolic stress for growth.'}
+    ]
+  },
+  {
+    id:'triceps',
+    name:'TRICEPS',
+    tag:'2/3 of Total Arm Size',
+    desc:'Triceps brachii lateral, medial, and long heads — the dominant mass of the upper arm that determines overall arm size.',
+    heroImg:'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600&q=80',
+    exercises:[
+      {name:'Close-Grip Bench Press',target:'All 3 Tricep Heads — Mass',sets:'4×6–10',img:'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80',desc:'Grip shoulder-width or slightly narrower. Elbows track close to torso. The mass builder — allows the heaviest tricep loading of any exercise. Builds dense, thick tricep mass that dominates arm size.'},
+      {name:'Skull Crusher',target:'Long Head — Primary',sets:'3×10–12',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Bar lowered to forehead or behind head. Elbows stay vertical — only forearms move. Exceptional for the long head — the largest of the three heads, creating arm thickness from the side. Classic mass builder.'},
+      {name:'Cable Tricep Pushdown',target:'Lateral Head — Horseshoe',sets:'4×12–15',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Straight bar or V-bar from high pulley. Elbows locked at sides. Full lockout at bottom — squeeze hard. Builds the horseshoe shape visible on the outer lateral head. Most common tricep exercise.'},
+      {name:'Overhead Tricep Extension',target:'Long Head — Stretch Position',sets:'3×12',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Dumbbell or cable overhead. Full extension with maximum long-head stretch. The long head is only fully lengthened overhead — this move is essential for complete long head development.'},
+      {name:'Tricep Dips',target:'All 3 Heads — Compound',sets:'3×10–15',img:'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=600&q=80',desc:'Keep body upright to emphasize triceps (leaning forward shifts to chest). Full range of motion. One of the best bodyweight mass builders. Add weight with a dip belt to progress.'},
+      {name:'Diamond Push-Up',target:'All Tricep Heads — Bodyweight',sets:'3×max',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Hands in diamond shape below sternum. Full range. Rivals weighted work for tricep development. Excellent finisher or home staple. Add backpack weight to continue progressing.'},
+      {name:'Single-Arm Cable Extension',target:'All Heads — Unilateral Balance',sets:'2×15 each',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'One arm at a time — forces each tricep to work independently. Exposes and corrects strength asymmetries developed from bilateral training. Essential for even development.'},
+      {name:'JM Press',target:'Tricep Power — Heavy',sets:'3×8',img:'https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?w=600&q=80',desc:'Hybrid between close-grip bench and skull crusher. Bar tracks toward chin as elbows flare slightly. Powerlifter secret for raw tricep strength. Allows heavier loading with less elbow stress than skull crushers.'}
+    ]
+  },
+  {
+    id:'legs',
+    name:'LEGS',
+    tag:'Largest Muscle Group',
+    desc:'Quadriceps, hamstrings, glutes, and calves — the foundation of athletic power, symmetry, and total body anabolic hormone production.',
+    heroImg:'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=600&q=80',
+    exercises:[
+      {name:'Back Squat',target:'Quads, Glutes, Hamstrings, Core',sets:'4×5–8',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',desc:'The king of all exercises. Bar on upper traps, feet shoulder-width. Break at hips and knees simultaneously, hit full depth. Builds total body mass and strength like nothing else. Master this movement.'},
+      {name:'Romanian Deadlift',target:'Hamstrings, Glutes — Posterior Chain',sets:'4×8–12',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Hip-hinge dominant. Bar stays close to legs, push hips back while maintaining flat back. Deep hamstring stretch at bottom. The best exercise for hamstring mass and posterior chain development.'},
+      {name:'Bulgarian Split Squat',target:'Quads, Glutes — Unilateral',sets:'3×10 each',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Rear foot elevated on bench, drop straight down. The most challenging and effective unilateral leg exercise. Superior glute and quad development with less spinal load. Fixes imbalances.'},
+      {name:'Leg Press',target:'Quads, Glutes — High Volume',sets:'4×12–15',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Adjust foot position: high/wide for glutes, low/narrow for quads. Allows maximum leg loading safely. Great for volume work after squats. Don\'t lock out knees at top.'},
+      {name:'Leg Curl',target:'Hamstrings — Isolation',sets:'3×12–15',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'Lying or seated. Curl heels toward glutes against resistance. The primary hamstring isolation exercise. Develops the under-butt and back-of-thigh region. Crucial for complete leg development.'},
+      {name:'Leg Extension',target:'Quadriceps — Isolation',sets:'3×15',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Full extension at top, controlled descent. Isolates all four quad muscles. Best used after heavy compound work as a finishing exercise. Creates the separation between quad heads.'},
+      {name:'Walking Lunges',target:'Quads, Glutes, Balance',sets:'3×20 steps',img:'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=600&q=80',desc:'Step forward, lower back knee near floor, alternate. Builds functional strength, balance, and athleticism. Great for quad and glute development. Add dumbbells for load.'},
+      {name:'Standing Calf Raise',target:'Gastrocnemius, Soleus',sets:'5×15–25',img:'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=600&q=80',desc:'Full stretch at bottom, full contraction at top. Calves respond best to high reps and frequency. Seated targets soleus, standing targets gastrocnemius. Train calves every session.'}
+    ]
+  },
+  {
+    id:'abs',
+    name:'ABS & CORE',
+    tag:'Core Stability',
+    desc:'Rectus abdominis, obliques, and transverse abdominis — the core musculature essential for aesthetics, stability, and athletic power.',
+    heroImg:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80',
+    exercises:[
+      {name:'Plank Variations',target:'Transverse Abdominis, Full Core',sets:'4×45–60s',img:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80',desc:'Forearm or extended plank. Straight line head to heel. Squeeze glutes, brace core like taking a punch. Progress to side plank, plank reach, RKC plank. Foundation of core stability.'},
+      {name:'Cable Crunch',target:'Rectus Abdominis — Heavy',sets:'4×15–20',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Kneel at cable, rope at neck. Crunch elbows toward knees — not a hip flex. Heavy cable crunches build thick, visible abs better than thousands of bodyweight crunches. Best ab mass builder.'},
+      {name:'Hanging Leg Raise',target:'Lower Abs, Hip Flexors',sets:'3×15',img:'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600&q=80',desc:'Dead hang from bar. Raise legs to 90° or toes-to-bar. Control descent. Best exercise for lower ab development. Requires significant core strength. Bend knees to make easier.'},
+      {name:'Ab Wheel Rollout',target:'Full Core — Rectus Abdominis',sets:'3×10–15',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Kneel on pad. Roll wheel forward until hips want to drop, pull back using abs. One of the most challenging and effective core exercises. Builds the full rectus abdominis simultaneously.'},
+      {name:'Russian Twist',target:'Obliques, Rotational Core',sets:'3×20',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Lean back 45°, feet elevated. Rotate side to side, hands touch floor alternately. Add a weight plate for resistance. Builds obliques — creating the V-shape and waist taper.'},
+      {name:'Bicycle Crunch',target:'Obliques + Rectus Abdominis',sets:'3×20 each',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Slow and controlled — not a race. Opposite elbow to knee, full rotation. Research shows this produces more muscle activation than most other ab exercises. Quality over quantity always.'},
+      {name:'Dead Bug',target:'Deep Core — Anti-Extension',sets:'3×10 each',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'Lie on back, arms up, knees at 90°. Extend opposite arm and leg while maintaining lower back flat on floor. Builds deep core stability. Essential for protecting the lower back during heavy lifts.'},
+      {name:'Dragon Flag',target:'Full Core — Advanced',sets:'3×5–8',img:'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=600&q=80',desc:'Bruce Lee\'s signature. Hold bench overhead, extend and lower body as a straight plank. One of the most demanding core exercises. Build up through leg raises and hollow body holds first.'}
+    ]
+  },
+  {
+    id:'glutes',
+    name:'GLUTES',
+    tag:'Powerhouse Muscles',
+    desc:'Gluteus maximus, medius, and minimus — the largest muscle in the body, responsible for hip extension, power, and aesthetic roundness.',
+    heroImg:'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1200&q=80',
+    cardImg:'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80',
+    exercises:[
+      {name:'Hip Thrust',target:'Gluteus Maximus — Primary',sets:'4×10–15',img:'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=600&q=80',desc:'Bar padded across hips, shoulders on bench. Drive hips explosively up, squeeze glutes hard at top for 1–2 seconds. The most scientifically proven glute builder. Highest gluteus maximus EMG activation of any exercise.'},
+      {name:'Sumo Deadlift',target:'Glutes, Inner Hamstrings, Adductors',sets:'3×6–8',img:'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80',desc:'Wide stance, toes pointing out, grip inside legs. Hip-dominant variation that maximally recruits gluteus maximus and medius. Great for longer femur lifters. Builds glute mass and power.'},
+      {name:'Cable Kickback',target:'Gluteus Maximus — Isolation',sets:'3×15–20',img:'https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?w=600&q=80',desc:'Cable at ankle height. Kick leg back and up, contract glute at full extension. Core braced, back neutral. Best isolation for targeting the glute separately from other hip extensors.'},
+      {name:'Glute Bridge',target:'Gluteus Maximus — Activation',sets:'4×15',img:'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80',desc:'Supine, knees bent. Drive hips up, hold 2 seconds. Bodyweight or barbell. The foundational glute exercise — perfect for activation before training and building mind-muscle connection.'},
+      {name:'Lateral Band Walk',target:'Gluteus Medius — Side Glute',sets:'3×20 steps',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&q=80',desc:'Loop band above knees, slight squat position. Walk sideways against resistance. Targets the often-neglected gluteus medius responsible for hip stability and creating the rounded, full side profile.'},
+      {name:'Bulgarian Split Squat (Glute Focus)',target:'Glutes + Quads — Unilateral',sets:'3×12 each',img:'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80',desc:'Rear foot elevated, take a longer stride forward to emphasize glutes over quads. Drop straight down. Unilateral exercise that builds single-leg strength and excellent glute development.'},
+      {name:'Donkey Kick',target:'Gluteus Maximus — Extension',sets:'3×20 each',img:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80',desc:'Hands and knees. Kick heel toward ceiling, knee at 90°. Add ankle weights or cable for resistance. Classic glute isolation focusing on the peak contraction of the gluteus maximus.'},
+      {name:'Romanian Deadlift (Glute Focus)',target:'Glutes + Hamstrings — Posterior',sets:'3×10–12',img:'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=600&q=80',desc:'Wide stance, toes slightly out. Push hips back to emphasize glutes. This wider stance shifts emphasis from hamstrings to gluteus maximus — a hybrid posterior chain builder.'}
+    ]
+  }
+];
+
+function buildGrid(){
+  const grid = document.getElementById('muscleGrid');
+  grid.innerHTML = muscles.map(m=>`
+    <div class="muscle-card" onclick="openDetail('${m.id}')">
+      <div class="muscle-card-img">
+        <img src="${m.cardImg}" alt="${m.name} training" loading="lazy">
+        <div class="img-overlay"></div>
+        <div class="muscle-label">${m.name}</div>
+        <div class="muscle-badge">${m.tag}</div>
+      </div>
+      <div class="muscle-card-body">
+        <p>${m.desc}</p>
+        <div class="muscle-card-footer">
+          <span>${m.exercises.length} exercises inside</span>
+          <span class="arrow">VIEW GUIDE →</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openDetail(id){
+  const m = muscles.find(x=>x.id===id);
+  if(!m) return;
+  document.getElementById('muscleGrid').classList.add('hide');
+  document.querySelector('#mainSection .section-sub').style.display='none';
+  document.querySelector('#mainSection .section-title').style.display='none';
+  document.querySelector('#mainSection .divider').style.display='none';
+
+  document.getElementById('detailHeroImg').src = m.heroImg;
+  document.getElementById('detailTitle').innerHTML = `${m.name} <span>TRAINING</span>`;
+  document.getElementById('detailSub').textContent = m.desc;
+
+  document.getElementById('exerciseGrid').innerHTML = m.exercises.map((e,i)=>`
+    <div class="exercise-card">
+      <div class="exercise-photo">
+        <img src="${e.img}" alt="${e.name}" loading="lazy">
+        <div class="ex-num">${i+1}</div>
+      </div>
+      <div class="exercise-body">
+        <h3>${e.name}</h3>
+        <div class="exercise-tags">
+          <span class="ex-tag">🎯 ${e.target}</span>
+          <span class="ex-tag gold">📊 ${e.sets}</span>
+        </div>
+        <p>${e.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('detailView').classList.add('show');
+  window.scrollTo(0,70);
+}
+
+function closeDetail(){
+  document.getElementById('detailView').classList.remove('show');
+  document.getElementById('muscleGrid').classList.remove('hide');
+  document.querySelector('#mainSection .section-sub').style.display='';
+  document.querySelector('#mainSection .section-title').style.display='';
+  document.querySelector('#mainSection .divider').style.display='';
+  window.scrollTo(0,0);
+}
+
+// handle hash links from home page
+window.addEventListener('load',()=>{
+  const hash = location.hash.replace('#','');
+  if(hash && muscles.find(m=>m.id===hash)) openDetail(hash);
+});
+
+buildGrid();
+</script>
+</body>
+</html>

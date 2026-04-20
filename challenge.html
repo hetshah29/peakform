@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90-Day Challenge – PeakForm</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.challenge-banner {
+  background: linear-gradient(135deg, rgba(255,61,0,0.18), rgba(255,107,53,0.08));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.challenge-banner::before {
+  content:'';
+  position: absolute; inset:0;
+  background-image: linear-gradient(rgba(255,61,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(255,61,0,0.06) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.challenge-banner h2 {
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(2.5rem,6vw,5rem);
+  letter-spacing:3px;
+  position:relative; z-index:1;
+  margin-bottom:1rem;
+}
+.challenge-banner h2 span { color:var(--accent); }
+.challenge-banner p { color:var(--muted); font-size:1.05rem; max-width:600px; margin:0 auto 2rem; position:relative; z-index:1; }
+.phase-cards { display:flex; gap:1.25rem; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+.phase-card {
+  border-radius:10px;
+  padding:1.1rem 2rem;
+  text-align:center;
+  min-width:170px;
+}
+.phase-1-card { background:rgba(255,61,0,0.18); border:1px solid var(--accent); }
+.phase-2-card { background:rgba(245,166,35,0.18); border:1px solid var(--gold); }
+.phase-3-card { background:rgba(255,107,53,0.18); border:1px solid var(--accent2); }
+.phase-label { font-family:'Bebas Neue',cursive; font-size:1.6rem; letter-spacing:2px; }
+.phase-1-card .phase-label { color:var(--accent); }
+.phase-2-card .phase-label { color:var(--gold); }
+.phase-3-card .phase-label { color:var(--accent2); }
+.phase-days { color:var(--muted); font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; }
+
+/* WEEK BLOCKS */
+.week-block { background:var(--bg3); border:1px solid var(--border2); border-radius:14px; overflow:hidden; margin-bottom:1.25rem; }
+.week-header {
+  display:flex; align-items:center; gap:1.25rem;
+  padding:1.1rem 1.5rem;
+  cursor:pointer;
+  background:rgba(255,255,255,0.02);
+  border-bottom:1px solid transparent;
+  transition:background 0.2s;
+  user-select:none;
+}
+.week-header:hover { background:rgba(255,61,0,0.06); }
+.week-header.open { border-bottom-color:var(--border2); }
+.week-num { font-family:'Bebas Neue',cursive; font-size:1.4rem; letter-spacing:2px; flex-shrink:0; }
+.week-title { font-weight:700; font-size:0.98rem; letter-spacing:0.5px; flex:1; }
+.week-phase-badge {
+  padding:0.2rem 0.85rem;
+  border-radius:20px;
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  flex-shrink:0;
+}
+.week-chevron { color:var(--muted); font-size:0.85rem; transition:transform 0.3s; flex-shrink:0; }
+.week-chevron.open { transform:rotate(180deg); }
+.week-days { display:none; padding:1rem; }
+.week-days.open { display:grid; gap:0.6rem; }
+.day-row {
+  background:var(--bg2);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:8px;
+  padding:0.9rem 1.2rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
+.day-label {
+  font-family:'Bebas Neue',cursive;
+  font-size:1.1rem;
+  letter-spacing:1.5px;
+  min-width:65px;
+  flex-shrink:0;
+}
+.day-info { flex:1; }
+.day-info strong { display:block; font-size:0.95rem; font-weight:700; margin-bottom:0.15rem; }
+.day-info span { color:var(--muted); font-size:0.82rem; line-height:1.4; }
+.day-tips { margin-top:0.25rem; color:var(--accent2); font-size:0.78rem; font-style:italic; }
+
+/* PHASE GUIDE */
+.phase-guide { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; margin-bottom:3rem; }
+.phase-guide-card { background:var(--bg3); border:1px solid var(--border2); border-radius:14px; padding:2rem; }
+.phase-guide-card h3 { font-family:'Bebas Neue',cursive; font-size:1.45rem; letter-spacing:2px; margin-bottom:0.75rem; }
+.phase-guide-card p { color:var(--muted); font-size:0.92rem; line-height:1.7; }
+.phase-guide-card ul { margin-top:0.75rem; }
+.phase-guide-card li { color:var(--muted); font-size:0.88rem; padding:0.3rem 0; display:flex; gap:0.5rem; }
+.phase-guide-card li::before { content:'▸'; color:var(--accent); flex-shrink:0; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>90-DAY <span>CHALLENGE</span></h1>
+    <p>Complete transformation program — 3 progressive phases, 90 days of structured training, one elite physique</p>
+  </div>
+
+  <section class="section">
+    <!-- BANNER -->
+    <div class="challenge-banner">
+      <h2>🔥 THE 90-DAY <span>TRANSFORMATION</span></h2>
+      <p>Three phases. 13 weeks. One complete physical transformation. This program builds from solid foundations to elite-level training intensity — progressively and systematically.</p>
+      <div class="phase-cards">
+        <div class="phase-card phase-1-card"><div class="phase-label">PHASE 1</div><div class="phase-days">Days 1–30 · Foundation</div></div>
+        <div class="phase-card phase-2-card"><div class="phase-label">PHASE 2</div><div class="phase-days">Days 31–60 · Intensity</div></div>
+        <div class="phase-card phase-3-card"><div class="phase-label">PHASE 3</div><div class="phase-days">Days 61–90 · Peak</div></div>
+      </div>
+    </div>
+
+    <!-- PHASE GUIDE -->
+    <div class="section-title">PHASE <span>BREAKDOWN</span></div>
+    <div class="divider"></div>
+    <div class="phase-guide">
+      <div class="phase-guide-card" style="border-top:4px solid var(--accent)">
+        <h3 style="color:var(--accent)">Phase 1: Foundation (Days 1–30)</h3>
+        <p>Learn movement patterns. Build a base of strength and cardiovascular conditioning. Focus entirely on form quality over heavy loading.</p>
+        <ul>
+          <li>4 training days / week</li>
+          <li>2 cardio sessions / week</li>
+          <li>1 full rest day</li>
+          <li>Sets: 3×10–12 reps</li>
+          <li>Rest: 60–90 seconds between sets</li>
+          <li>Week 4: Deload & assessment</li>
+        </ul>
+      </div>
+      <div class="phase-guide-card" style="border-top:4px solid var(--gold)">
+        <h3 style="color:var(--gold)">Phase 2: Intensity (Days 31–60)</h3>
+        <p>Progressive overload intensifies. Volume increases, rest periods decrease. Supersets and circuits are introduced. Real strength gains begin.</p>
+        <ul>
+          <li>5 training days / week</li>
+          <li>HIIT sessions added</li>
+          <li>Sets: 4×8–12 reps</li>
+          <li>Rest: 45–60 seconds</li>
+          <li>Push-Pull-Legs split introduced</li>
+          <li>Drop sets and supersets in Week 8</li>
+        </ul>
+      </div>
+      <div class="phase-guide-card" style="border-top:4px solid var(--accent2)">
+        <h3 style="color:var(--accent2)">Phase 3: Peak (Days 61–90)</h3>
+        <p>Maximum intensity. Heavy compound lifts, metabolic conditioning, advanced techniques, and PR attempts. Your hardest and most rewarding phase.</p>
+        <ul>
+          <li>5–6 training days / week</li>
+          <li>Heavy 3–5RM strength work</li>
+          <li>Cluster sets and rest-pause</li>
+          <li>Sprint conditioning added</li>
+          <li>Barbell complex circuits</li>
+          <li>Day 90: Full fitness assessment & PRs</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 90-DAY SCHEDULE -->
+    <div class="section-title">COMPLETE <span>90-DAY SCHEDULE</span></div>
+    <div class="divider"></div>
+    <div id="weekContainer"></div>
+  </section>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness | <a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a></p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+<script>
+const weeks = [
+  {w:1,title:'INTRODUCTION WEEK',phase:1,days:[
+    {n:1,name:'Full Body Assessment + Light Training',type:'strength',detail:'Max test: push-ups, pull-ups, 60s plank. Then: 3×12 bodyweight squats, push-ups, inverted rows. Log everything — this is your Day 1 baseline.',tip:'Take photos and record all baseline metrics today.'},
+    {n:2,name:'Cardio Intro: 20-min Moderate Run',type:'cardio',detail:'Zone 2 cardio at 60–70% max HR. Focus on breathing rhythm and maintaining pace. Walk if needed.',tip:'Keep heart rate at 130–145 BPM throughout.'},
+    {n:3,name:'Upper Body A: Chest + Triceps',type:'strength',detail:'Bench Press 3×12, Incline DB Press 3×12, Tricep Pushdown 3×15, Close-Grip Push-Up 3×max',tip:'Focus on feeling the muscle, not moving the weight.'},
+    {n:4,name:'Active Recovery: 30-min Walk + Stretch',type:'active',detail:'Easy walk, full body static stretching. Hip flexors, hamstrings, shoulders, chest — 45–60 sec each.',tip:'This is not optional. Recovery is training.'},
+    {n:5,name:'Lower Body A: Quads + Calves',type:'strength',detail:'Goblet Squat 4×12, Leg Press 3×15, Leg Extension 3×15, Standing Calf Raise 4×20',tip:'Keep depth — crease of hip below knee.'},
+    {n:6,name:'Cardio + Core Circuit',type:'cardio',detail:'25-min moderate run, then 3 rounds: 60s plank, 20 crunches, 15 leg raises. Rest 90s between rounds.',tip:'Run at conversational pace — if you can\'t speak a sentence, slow down.'},
+    {n:7,name:'REST DAY',type:'rest',detail:'Complete rest. Prioritize 8+ hours sleep, hit your protein target, and prepare mentally for Week 2.',tip:'Eat well and sleep early tonight.'}
+  ]},
+  {w:2,title:'BUILDING VOLUME',phase:1,days:[
+    {n:8,name:'Upper Body B: Back + Biceps',type:'strength',detail:'Lat Pulldown 4×12, Seated Cable Row 3×12, DB Row 3×12 each side, Barbell Curl 3×12',tip:'Pull from the elbows, not the hands — engage lats first.'},
+    {n:9,name:'Cardio: 25-min Run + 10-min Row',type:'cardio',detail:'Slightly increase intensity from Week 1. Maintain Zone 2 for the run, moderate effort on rower.',tip:'Rowing burns 20% more calories than running at same perceived effort.'},
+    {n:10,name:'Lower Body B: Hamstrings + Glutes',type:'strength',detail:'Romanian Deadlift 4×10, Leg Curl 3×15, Hip Thrust 4×15, Bulgarian Split Squat 3×10 each',tip:'Push hips back on RDL — feel the hamstring stretch.'},
+    {n:11,name:'Shoulders + Core',type:'strength',detail:'OHP 4×10, Lateral Raise 3×15, Face Pull 3×20, Cable Crunch 3×20, Plank 3×60s',tip:'Never skip face pulls — they protect your shoulders.'},
+    {n:12,name:'Full Body Circuit',type:'hiit',detail:'5 rounds: 10 squats, 10 push-ups, 10 rows, 10 reverse lunges, 30s rest between rounds.',tip:'Move with purpose but control form throughout.'},
+    {n:13,name:'Cardio: 30-min Run',type:'cardio',detail:'Slightly faster pace than Week 1. Measure your distance — you\'ll beat it by Week 13.',tip:'Focus on a steady rhythm. Breathing in for 3 steps, out for 2.'},
+    {n:14,name:'REST DAY',type:'rest',detail:'Rest. Foam roll all major muscle groups. Eat a full day of nutritious food.',tip:'Your muscles grow on rest days — not in the gym.'}
+  ]},
+  {w:3,title:'INCREASING INTENSITY',phase:1,days:[
+    {n:15,name:'Chest + Triceps (Week 3 Version)',type:'strength',detail:'Bench Press 4×10, Incline DB 3×12, Cable Fly 3×12, Skull Crusher 3×10, Pushdown 3×15',tip:'Add 5–10 lbs to bench vs Week 1 if form was perfect.'},
+    {n:16,name:'HIIT Cardio: 20 Minutes',type:'hiit',detail:'30s sprint / 90s walk × 8 rounds. All-out effort on every sprint. Recover fully between.',tip:'Sprint at 90–95% effort — this should be uncomfortable.'},
+    {n:17,name:'Lower Body: Quads + Calves',type:'strength',detail:'Back Squat 4×10, Leg Press 4×12, Walking Lunge 3×12 each, Calf Raise 5×20',tip:'Squat to full depth — no half reps.'},
+    {n:18,name:'Back + Biceps (Week 3)',type:'strength',detail:'Pull-Up 4×AMRAP, Barbell Row 4×8, Cable Row 3×12, Hammer Curl 3×12',tip:'Aim for 1 more rep on pull-ups than last week.'},
+    {n:19,name:'Active Recovery + Yoga',type:'active',detail:'30-min yoga flow: downward dog, warrior I & II, pigeon pose, seated forward fold.',tip:'Yoga + lifting = longevity in the sport.'},
+    {n:20,name:'Legs + Shoulders Combo',type:'strength',detail:'Romanian Deadlift 3×10, Hip Thrust 3×15, OHP 3×10, Lateral Raise 3×15, Face Pull 3×20',tip:'Quality reps only — slow and controlled.'},
+    {n:21,name:'REST DAY',type:'rest',detail:'Rest, recover. Reflect on 3 weeks of progress.',tip:'Week 4 is a deload — you\'ve earned it.'}
+  ]},
+  {w:4,title:'PHASE 1 DELOAD & ASSESSMENT',phase:1,days:[
+    {n:22,name:'Light Upper Body',type:'strength',detail:'50% of normal weights. 3×12 bench, 3×12 lat pulldown, 2×15 curls, 2×15 pushdowns. Easy effort.',tip:'No ego this week — this is strategic recovery.'},
+    {n:23,name:'Easy Cardio: 20 min',type:'cardio',detail:'Easy jog at conversational pace. Could hold a full conversation without gasping.',tip:'Zone 1 only today — the body needs rest.'},
+    {n:24,name:'Light Lower Body',type:'strength',detail:'50% weights. 3×12 goblet squat, 3×12 RDL, 4×20 calf raises. Light and controlled.',tip:'Feel your muscles working — enhanced mind-muscle connection.'},
+    {n:25,name:'Full Body Mobility Session',type:'active',detail:'30-min foam rolling full body, 20-min full body yoga/stretch flow.',tip:'This is the most productive "easy" session you can do.'},
+    {n:26,name:'Phase 1 Fitness Test',type:'strength',detail:'Retest: max push-ups, max pull-ups, 60s plank, 30-min run distance. Compare to Day 1.',tip:'Document every metric — your progress will motivate you for Phase 2.'},
+    {n:27,name:'Light Cardio + Mobility',type:'active',detail:'20-min easy bike or walk. 20-min full body stretching.',tip:'Prep your body for Phase 2 starting next week.'},
+    {n:28,name:'REST DAY',type:'rest',detail:'Final Phase 1 rest day. Reflect, recover, plan. Phase 2 begins Monday.',tip:'You\'ve completed Phase 1. That\'s real.'}
+  ]},
+  {w:5,title:'PHASE 2 KICKOFF — PPL BEGINS',phase:2,days:[
+    {n:29,name:'Push Day: Chest + Shoulders + Triceps',type:'strength',detail:'Bench Press 4×8, OHP 4×8, Incline DB 3×12, Lateral Raise 4×15, Skull Crusher 3×10, Pushdown 3×12',tip:'Push days are your bread and butter — show up strong.'},
+    {n:30,name:'HIIT: Tabata Protocol',type:'hiit',detail:'20s max effort / 10s rest × 8 rounds each: Burpees, Mountain Climbers, Jump Squats (3 exercises total = 24 rounds).',tip:'Tabata should feel brutal. If it doesn\'t, go harder.'},
+    {n:31,name:'Pull Day: Back + Biceps + Rear Delts',type:'strength',detail:'Deadlift 4×5, Pull-Up 4×AMRAP, Barbell Row 4×8, Face Pull 3×20, Barbell Curl 3×12',tip:'Deadlift is king. Pull heavy and pull often.'},
+    {n:32,name:'Leg Day A: Quad Focus',type:'strength',detail:'Back Squat 5×5, Leg Press 4×12, Leg Extension 3×15, Walking Lunge 3×12, Calf Raise 5×20',tip:'5×5 squat protocol starts here — add weight weekly.'},
+    {n:33,name:'Push Day 2',type:'strength',detail:'Incline Bench 4×10, Arnold Press 3×12, Cable Crossover 3×15, DB Lateral Raise 4×15, Diamond Push-Up 3×max',tip:'Different push angles hit the muscle from new angles.'},
+    {n:34,name:'Cardio + Core: 35-min Run',type:'cardio',detail:'35-min run + 4 rounds: hanging leg raise ×15, cable crunch ×20, ab wheel ×10, plank ×60s',tip:'Longest run so far — build that engine.'},
+    {n:35,name:'REST DAY',type:'rest',detail:'Rest. Phase 2 is more demanding — honor the recovery.',tip:'Ice bath or contrast shower highly recommended today.'}
+  ]},
+  {w:6,title:'PUSH-PULL-LEGS — FULL WEEK',phase:2,days:[
+    {n:36,name:'Push Day: Heavy',type:'strength',detail:'Bench 4×8, OHP 4×8, Incline DB 3×10, Lateral Raise 4×15, Skull Crusher 3×10. Focus: add weight where possible.',tip:'Progressive overload is non-negotiable this phase.'},
+    {n:37,name:'Pull Day: Deadlift Focus',type:'strength',detail:'Deadlift 4×5, Weighted Pull-Up 4×6, Pendlay Row 4×8, Cable Row 3×12, Face Pull 4×20, Hammer Curl 3×12',tip:'Weighted pull-ups transform your back. Start even with 5 lbs.'},
+    {n:38,name:'Leg Day B: Posterior Chain',type:'strength',detail:'Front Squat 4×8, Romanian Deadlift 4×8, Hip Thrust 4×15, Nordic Curl 3×6, Calf Raise 5×20',tip:'Front squat requires mobility — drill the rack position.'},
+    {n:39,name:'Push Day + Conditioning',type:'hiit',detail:'Full push session AM. PM: 20-min conditioning — 30s work / 30s rest cycling through: push-up, jump squat, mountain climber, burpee.',tip:'Two-a-days build serious work capacity.'},
+    {n:40,name:'Pull Day 2: Volume',type:'strength',detail:'Rack Pull 4×6, Chest-Supported Row 4×10, Preacher Curl 3×12, Lat Pulldown 3×12, Rear Delt Fly 3×15',tip:'Rack pulls allow you to overload the top portion of the deadlift.'},
+    {n:41,name:'Leg Day C: Full Legs + Core',type:'strength',detail:'Back Squat 4×8, Bulgarian Split Squat 3×10 each, RDL 3×10, Hip Thrust 3×15, Full Core Circuit ×4 rounds',tip:'Bulgarian split squats are brutal but worth every rep.'},
+    {n:42,name:'REST DAY',type:'rest',detail:'Full rest. High protein day. Early sleep.',tip:'You\'re halfway through Phase 2. The work is showing.'}
+  ]},
+  {w:7,title:'PROGRESSIVE OVERLOAD WEEK',phase:2,days:[
+    {n:43,name:'Max Strength: Chest',type:'strength',detail:'Work up to a heavy 3RM bench press. Then: 3×10 at 75%. Incline press 3×12. Peak contraction focus.',tip:'3RM test — go heavy but with a spotter.'},
+    {n:44,name:'Max Strength: Back',type:'strength',detail:'Heavy deadlift — work to 3RM. Then: pull-up 4×AMRAP weighted, barbell row 3×10.',tip:'New deadlift 3RM attempt. Pull from your legs, not your back.'},
+    {n:45,name:'Cardio: 40-min Run',type:'cardio',detail:'Longest run of the challenge so far. Maintain Zone 2 throughout. Measure distance run.',tip:'This builds the cardiovascular base you\'ll need for Phase 3.'},
+    {n:46,name:'Max Strength: Legs',type:'strength',detail:'Work to heavy squat 3RM. Then: RDL 4×8, Leg Press 4×12, Calf Raise 5×25.',tip:'Squat PR attempt. Depth and control first, then weight.'},
+    {n:47,name:'Shoulders + Arms: Volume Bomb',type:'strength',detail:'OHP 4×10, superset: Barbell Curl + Skull Crusher 5×12 each, Lateral Raise 5×15.',tip:'25 total sets today. Embrace the pump.'},
+    {n:48,name:'HIIT: Barbell Complex',type:'hiit',detail:'Barbell Complex: 6 reps each — RDL, Bent Row, Hang Clean, Front Squat, Push Press. 5 rounds. 90s rest.',tip:'Don\'t put the bar down between exercises within a round.'},
+    {n:49,name:'REST DAY',type:'rest',detail:'Rest. You just tested your 3RMs — the body needs repair.',tip:'Massage gun or foam rolling session tonight.'}
+  ]},
+  {w:8,title:'SUPERSETS, DROP SETS & ADVANCED TECHNIQUES',phase:2,days:[
+    {n:50,name:'Chest/Back Superset Day',type:'strength',detail:'Superset: Bench Press + Pull-Up 4×10. Superset: Incline DB + Barbell Row 3×12. DB Fly 3×15.',tip:'Antagonist supersets increase density and save time.'},
+    {n:51,name:'Legs: Drop Sets Protocol',type:'strength',detail:'Squat drop sets: 3 weight drops per set × 4 sets. RDL 4×10. Leg Curl 3×15. Calf Raise 5×25.',tip:'Drop sets produce extreme metabolic stress — ideal for hypertrophy.'},
+    {n:52,name:'Cardio + Core Superset',type:'cardio',detail:'Run 30 min. Then 4 rounds: Ab Wheel ×12 + Dragon Flag ×5 + Bicycle Crunch ×20. 60s rest.',tip:'Core supersets maximize time and training density.'},
+    {n:53,name:'Shoulders + Arms: Giant Set',type:'strength',detail:'Giant Set: OHP × Lateral Raise × Rear Delt Fly × Barbell Curl × Skull Crusher. 4 rounds of 10 each.',tip:'50 total sets in one giant set sequence. This is Phase 2.'},
+    {n:54,name:'Full Body: Compound Day',type:'strength',detail:'Deadlift 4×5, Bench Press 4×5, Back Squat 4×5, OHP 3×8. All heavy compound movements.',tip:'The "Big 4" day. Log every weight — these are your strength markers.'},
+    {n:55,name:'Active Recovery',type:'active',detail:'30-min yoga flow. 15-min foam rolling full body. 20-min easy walk.',tip:'Phase 2 ends in one week. Recover well.'},
+    {n:56,name:'REST DAY',type:'rest',detail:'Final Phase 2 rest day before Phase 3 begins.',tip:'Phase 3 is the most demanding. Rest completely today.'}
+  ]},
+  {w:9,title:'PHASE 3: PEAK BEGINS',phase:3,days:[
+    {n:57,name:'Phase 3 Assessment + Heavy Chest',type:'strength',detail:'New 1RM bench attempt. Then: volume work 4×10, finisher: max push-ups to failure.',tip:'Document this 1RM — compare to Day 1 baseline.'},
+    {n:58,name:'Heavy Back + Pull Specialization',type:'strength',detail:'Deadlift 5×3 (heavy), Weighted Pull-Up 4×6, Pendlay Row 4×8, Face Pull 3×25.',tip:'Pendlay rows teach explosive pulling strength.'},
+    {n:59,name:'Sprint Conditioning: 10 Rounds',type:'hiit',detail:'10 × 200m all-out sprint / walk back for recovery. Full effort every sprint. Time yourself.',tip:'Sprint conditioning shreds body fat while preserving muscle. Commit.'},
+    {n:60,name:'Heavy Legs + Glutes',type:'strength',detail:'Squat 5×3, Hip Thrust 5×8, Bulgarian Split Squat 3×8 each, Nordic Curl 3×6.',tip:'5×3 means very heavy — 85–90% of 1RM.'},
+    {n:61,name:'Upper Body Volume Day',type:'strength',detail:'5×15 bench, weighted pull-up 5×8, full arm specialization — 8 sets bicep + 8 sets tricep.',tip:'Volume day after strength day — muscle adapted, now maximize reps.'},
+    {n:62,name:'Metabolic Barbell Complex',type:'hiit',detail:'5 rounds: 6 reps RDL + Row + Hang Clean + Front Squat + OHP. 90s rest between rounds.',tip:'Barbell complexes are the closest thing to full-body conditioning with weights.'},
+    {n:63,name:'REST DAY',type:'rest',detail:'Full rest. Phase 3 is the hardest phase — recovery is as critical as training.',tip:'Sleep 9 hours if you can. Muscle is built while you sleep.'}
+  ]},
+  {w:10,title:'ADVANCED TECHNIQUES: CLUSTER SETS & DROP SETS',phase:3,days:[
+    {n:64,name:'Chest: Drop Sets + Rest-Pause',type:'strength',detail:'Bench drop sets (4 drops per set × 4 sets). Incline rest-pause sets. Cable crossover 100-rep challenge.',tip:'100-rep challenge: pick a weight you can do 30 reps with, rest-pause to 100.'},
+    {n:65,name:'Back: Heavy + Mechanical Drop',type:'strength',detail:'Heavy bent-over row 4×6, then mechanical drop set: weighted pull-up → bodyweight pull-up → ring row → band pull-apart.',tip:'Mechanical drops change your leverage as you fatigue — genius protocol.'},
+    {n:66,name:'Fasted Cardio: 45 min',type:'cardio',detail:'Fasted Zone 2, first thing in the morning. 45 continuous minutes at 130–140 BPM. Measure distance.',tip:'Fasted cardio maximizes fat oxidation. Fuel with BCAAs beforehand if needed.'},
+    {n:67,name:'Legs: Cluster Sets',type:'strength',detail:'Squat cluster sets: 5 reps, 20s rest × 4 mini-sets = 1 cluster. Complete 4 full clusters.',tip:'Clusters let you lift near-maximal weight for more total volume. Elite protocol.'},
+    {n:68,name:'Arms Specialization Day',type:'strength',detail:'Full bicep routine (5 exercises × 3 sets) + Full tricep routine (5 exercises × 3 sets). 30 sets arms.',tip:'Dedicated arm day produces arm growth that compounds with your main lifts.'},
+    {n:69,name:'AMRAP Challenge: 20 Minutes',type:'hiit',detail:'As many rounds as possible in 20 min: 5 pull-ups + 10 push-ups + 15 squats + 20 sit-ups.',tip:'AMRAP format develops mental toughness as much as fitness.'},
+    {n:70,name:'REST DAY',type:'rest',detail:'Rest. Increase protein 25% above normal today for super-recovery.',tip:'This is the hardest week of training you\'ve ever done. Recover like it matters.'}
+  ]},
+  {w:11,title:'MAXIMUM INTENSITY',phase:3,days:[
+    {n:71,name:'Full Body Power Day',type:'strength',detail:'Power Clean 4×4, Box Jump 4×5, Bench Press 4×5, Deadlift 4×3. All explosive and heavy.',tip:'Power training improves everything — strength, speed, coordination.'},
+    {n:72,name:'Chest + Shoulders Volume Bomb',type:'strength',detail:'20+ total sets across chest and shoulders. Multiple angles, multiple techniques. Short rest for maximum pump.',tip:'Your best chest and shoulder pump of the challenge.'},
+    {n:73,name:'Cardio: Interval Pyramid',type:'cardio',detail:'1min + 2min + 3min + 4min + 3min + 2min + 1min intervals at 90% HR. Walk recovery between each.',tip:'Pyramid intervals prevent pacing — you can\'t predict what\'s coming next.'},
+    {n:74,name:'Legs: Volume + Power Combo',type:'strength',detail:'Squat 5×3 heavy, Leg Press 4×20 light, Hip Thrust 4×15, Romanian Deadlift 3×10.',tip:'Heavy to light within same session — strength then hypertrophy.'},
+    {n:75,name:'Back Specialization Day',type:'strength',detail:'Pull-Up 5×AMRAP, Deadlift 4×5, 3 different row variations ×3 sets each, Rear Delt work.',tip:'15+ back sets today. The back is what makes a physique from the rear.'},
+    {n:76,name:'HIIT: 30-min Max Effort',type:'hiit',detail:'Burpee, jump squat, push-up, mountain climber, sprint intervals. Maximum effort throughout.',tip:'The hardest cardio session of the program. Give absolutely everything.'},
+    {n:77,name:'REST DAY',type:'rest',detail:'Two weeks remaining. Rest completely.',tip:'You are almost there. Do not underestimate the importance of today.'}
+  ]},
+  {w:12,title:'FINAL PUSH — LAST HEAVY SESSIONS',phase:3,days:[
+    {n:78,name:'Upper Body: Peak Contraction Focus',type:'strength',detail:'Every rep: 2-second squeeze at peak contraction. Full range, 3-second negative. Constant tension training.',tip:'Peak contraction training maximizes mind-muscle connection and metabolic stress.'},
+    {n:79,name:'Final Heavy Squat Session',type:'strength',detail:'Work up to best 3RM. Then 4×10 for volume. Last chance for a squat PR before assessment.',tip:'This is your last heavy squat of the challenge. Make it count.'},
+    {n:80,name:'Cardio: 45-min Personal Best Attempt',type:'cardio',detail:'45 continuous minutes. Run farther than you\'ve ever run. Measure exact distance.',tip:'Compare to your Week 1 20-minute run. The improvement will amaze you.'},
+    {n:81,name:'Full Body Pump Circuit',type:'hiit',detail:'3 complete rounds through every body part, 15 reps per exercise, 30s rest between exercises.',tip:'Last full-body circuit of the challenge. Celebrate every rep.'},
+    {n:82,name:'Back + Core Power Day',type:'strength',detail:'Deadlift max attempt (5RM or 3RM), Weighted Pull-Up max, Core circuit 5 rounds.',tip:'Deadlift PR attempt. Pull the most weight you\'ve ever pulled.'},
+    {n:83,name:'Arms Finisher Session',type:'strength',detail:'10 sets bicep + 10 sets tricep, superset format. Best arm pump of the entire challenge.',tip:'Give your arms a final session to remember.'},
+    {n:84,name:'REST DAY',type:'rest',detail:'6 days remain. Rest, refuel, reflect.',tip:'The final week is a celebration. You\'ve already done the hard work.'}
+  ]},
+  {w:13,title:'FINAL WEEK — GLORY DAYS',phase:3,days:[
+    {n:85,name:'Bench Press PR Attempt',type:'strength',detail:'Work to new 1RM or 3RM bench press. Document the lift. Then finish with high-rep pump work.',tip:'You\'re stronger than you were 84 days ago. The numbers will prove it.'},
+    {n:86,name:'Deadlift PR + Pull-Up Max',type:'strength',detail:'Attempt new deadlift personal record. Test pull-up max reps. Document all numbers.',tip:'Compare to Day 1. The difference represents 86 days of dedication.'},
+    {n:87,name:'Squat PR + Hip Thrust Max',type:'strength',detail:'Final squat PR attempt. Hip thrust max weight test. Last heavy leg session of the challenge.',tip:'Your legs are not the same legs as Day 1.'},
+    {n:88,name:'Cardio + Core Final Assessment',type:'cardio',detail:'Best 40-min distance attempt. Core retest: max plank hold, max sit-ups in 60s. Document all.',tip:'Every metric measured today can be compared to Day 1.'},
+    {n:89,name:'Full Body Finale Circuit',type:'hiit',detail:'Full body circuit celebrating 89 days. Every muscle group, every exercise you\'ve learned. Celebrate!',tip:'This is a celebration. Enjoy every single rep.'},
+    {n:90,name:'🏆 DAY 90: COMPLETE!',type:'strength',detail:'Final photo. Full measurements. All 1RM comparisons. Plank test. Run test. You did what most people never will.',tip:'Share your transformation. You\'ve earned every gram of progress.'}
+  ]}
+];
+
+const phaseColors = {1:'var(--accent)',2:'var(--gold)',3:'var(--accent2)'};
+const badgeStyles = {
+  rest:'badge-rest',strength:'badge-strength',cardio:'badge-cardio',
+  hiit:'badge-hiit',active:'badge-active'
+};
+const typeLabels = {rest:'REST',strength:'STRENGTH',cardio:'CARDIO',hiit:'HIIT',active:'ACTIVE'};
+
+function buildWeeks(){
+  const c = document.getElementById('weekContainer');
+  c.innerHTML = weeks.map((w,i)=>`
+    <div class="week-block">
+      <div class="week-header" onclick="toggleWeek(${i})" id="wh-${i}">
+        <div class="week-num" style="color:${phaseColors[w.phase]}">WEEK ${w.w}</div>
+        <div class="week-title">${w.title}</div>
+        <div class="week-phase-badge" style="background:rgba(255,61,0,0.1);color:${phaseColors[w.phase]};border:1px solid ${phaseColors[w.phase]}">PHASE ${w.phase}</div>
+        <div class="week-chevron" id="wc-${i}">▼</div>
+      </div>
+      <div class="week-days" id="wd-${i}">
+        ${w.days.map(d=>`
+          <div class="day-row">
+            <div class="day-label" style="color:${phaseColors[w.phase]}">DAY ${d.n}</div>
+            <div class="day-info">
+              <strong>${d.name}</strong>
+              <span>${d.detail}</span>
+              ${d.tip?`<div class="day-tips">💡 ${d.tip}</div>`:''}
+            </div>
+            <span class="${badgeStyles[d.type]}">${typeLabels[d.type]}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleWeek(i){
+  const days = document.getElementById('wd-'+i);
+  const chev = document.getElementById('wc-'+i);
+  const hdr = document.getElementById('wh-'+i);
+  const isOpen = days.classList.contains('open');
+  days.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
+  hdr.classList.toggle('open',!isOpen);
+}
+
+buildWeeks();
+// Auto-open first week
+toggleWeek(0);
+</script>
+</body>
+</html>

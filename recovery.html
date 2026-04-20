@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recovery Guide – PeakForm</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.rec-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.rec-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent); }
+.rec-card:hover { border-color: var(--border); }
+.rec-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.rec-card h3 { font-family:'Bebas Neue',cursive; font-size:1.5rem; letter-spacing:2px; margin-bottom:0.85rem; }
+.rec-card p { color:var(--muted); line-height:1.75; font-size:0.93rem; margin-bottom:0.6rem; }
+.tip-list { list-style:none; margin-top:0.75rem; }
+.tip-list li { color:var(--muted); font-size:0.9rem; padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.04); display:flex; align-items:flex-start; gap:0.6rem; }
+.tip-list li::before { content:'▸'; color:var(--accent); flex-shrink:0; margin-top:0.1rem; }
+.supp-card { background:var(--bg3); border:1px solid var(--border2); border-radius:12px; padding:1.6rem; }
+.supp-card h4 { font-family:'Bebas Neue',cursive; font-size:1.2rem; letter-spacing:2px; color:var(--accent); margin-bottom:0.5rem; }
+.supp-card p { color:var(--muted); font-size:0.9rem; line-height:1.65; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>RECOVERY <span>SCIENCE</span></h1>
+    <p>Recovery is where growth actually happens — master these protocols to maximize every gain and stay injury-free</p>
+  </div>
+
+  <section class="section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('sleep',this)">Sleep</button>
+      <button class="tab-btn" onclick="switchTab('stretch',this)">Stretching</button>
+      <button class="tab-btn" onclick="switchTab('active',this)">Active Recovery</button>
+      <button class="tab-btn" onclick="switchTab('deload',this)">Deload Week</button>
+      <button class="tab-btn" onclick="switchTab('tools',this)">Recovery Tools</button>
+    </div>
+
+    <!-- SLEEP -->
+    <div id="tab-sleep" class="tab-content active">
+      <div class="section-title">SLEEP — YOUR <span>SECRET WEAPON</span></div>
+      <div class="divider"></div>
+      <div class="grid-auto" style="margin-bottom:3rem">
+        <div class="rec-card"><div class="rec-icon">🌙</div><h3>Sleep Duration</h3><p>Aim for 7–9 hours of uninterrupted sleep nightly. 80% of your daily growth hormone (GH) is released during deep sleep stages. Chronic sleep deprivation drops testosterone by 10–15% within just one week of poor sleep.</p></div>
+        <div class="rec-card"><div class="rec-icon">🕐</div><h3>Sleep Timing</h3><p>Align with your circadian rhythm. Sleeping 10pm–6am optimizes natural cortisol and growth hormone rhythms. Consistency in sleep timing matters as much as duration — irregular sleep disrupts hormonal cycles.</p></div>
+        <div class="rec-card"><div class="rec-icon">❄️</div><h3>Sleep Environment</h3><p>Keep room at 65–68°F (18–20°C). Complete darkness — blackout curtains boost melatonin production significantly. White noise masks disturbances. A cool, dark, quiet room is the performance environment for recovery.</p></div>
+        <div class="rec-card"><div class="rec-icon">📱</div><h3>Screen Hygiene</h3><p>No screens 60–90 minutes before bed. Blue light suppresses melatonin by up to 50%. If screen use is unavoidable, use Night Shift mode or blue-light blocking glasses in the hours before sleep.</p></div>
+        <div class="rec-card"><div class="rec-icon">☕</div><h3>Caffeine Cutoff</h3><p>Stop all caffeine by 1–2pm. Caffeine has a 5–6 hour half-life — a 3pm coffee is still 50% active at 9pm. This directly reduces deep sleep quality and GH secretion even when you fall asleep normally.</p></div>
+        <div class="rec-card"><div class="rec-icon">📊</div><h3>HRV Tracking</h3><p>Use WHOOP, Polar H10, or Garmin to track Heart Rate Variability (HRV) daily. HRV is the single best objective metric for recovery status and readiness to train hard. High HRV = recover well, train hard. Low HRV = recover more.</p></div>
+      </div>
+      <div class="section-title">SLEEP SUPPLEMENT <span>STACK</span></div>
+      <div class="divider"></div>
+      <div class="grid-4">
+        <div class="supp-card"><h4>🌙 Melatonin</h4><p>0.5–3mg 30 min before bed. Use minimum effective dose — higher doses cause morning grogginess. Ideal for travel and shifting sleep schedule.</p></div>
+        <div class="supp-card"><h4>🧘 Magnesium Glycinate</h4><p>400mg 1 hour before bed. Activates GABA receptors, reduces cortisol, and measurably extends deep sleep duration.</p></div>
+        <div class="supp-card"><h4>🌿 Ashwagandha</h4><p>600mg KSM-66 extract. Cortisol modulator and stress reducer. Shown to improve sleep quality and testosterone in stressed athletes.</p></div>
+        <div class="supp-card"><h4>🍵 L-Theanine</h4><p>200–400mg before bed. Promotes alpha brain waves (relaxed focus), reduces sleep latency without sedation. Synergizes excellently with magnesium.</p></div>
+      </div>
+    </div>
+
+    <!-- STRETCHING -->
+    <div id="tab-stretch" class="tab-content">
+      <div class="section-title">MOBILITY & <span>FLEXIBILITY</span></div>
+      <div class="divider"></div>
+      <div class="grid-auto">
+        <div class="rec-card"><div class="rec-icon">🤸</div><h3>Dynamic Warm-Up</h3><p>Before every session: 5–10 minutes of dynamic stretching only. Leg swings, arm circles, hip rotations, inchworms, world's greatest stretch. Increases blood flow and ROM. Never static stretch cold muscles — it reduces performance.</p></div>
+        <div class="rec-card"><div class="rec-icon">🧘</div><h3>Post-Workout Static Stretch</h3><p>After training only. Hold 30–60 seconds per stretch. Target muscles trained that session. Regular practice improves flexibility over weeks and reduces DOMS severity.</p>
+          <ul class="tip-list" style="margin-top:0.75rem">
+            <li>Hip flexor lunge stretch: 60 sec each side</li>
+            <li>Doorway chest stretch: 45 sec</li>
+            <li>Hamstring stretch seated: 60 sec each</li>
+            <li>Lat overhead stretch: 45 sec each side</li>
+            <li>Standing quad stretch: 45 sec each</li>
+          </ul>
+        </div>
+        <div class="rec-card"><div class="rec-icon">🌀</div><h3>Foam Rolling</h3><p>Self-myofascial release before and after training. 60–90 seconds per muscle group. Pause on tender trigger points. Priority areas: IT band, thoracic spine, calves, hip flexors, lats, glutes.</p></div>
+        <div class="rec-card"><div class="rec-icon">🦵</div><h3>Lower Body Protocol</h3><p>Essential for squat and deadlift athletes. Pigeon pose (2min/side), couch stretch (90 sec/side), seated hamstring stretch, ankle mobility circles, calf raises on step edge. Perform daily.</p></div>
+        <div class="rec-card"><div class="rec-icon">💪</div><h3>Upper Body Protocol</h3><p>Cross-body shoulder stretch, sleeper stretch, thoracic extension over foam roller, doorway pec stretch, neck side bends. Non-negotiable for pressing and pulling athletes to maintain shoulder health.</p></div>
+        <div class="rec-card"><div class="rec-icon">🧲</div><h3>Yoga for Athletes</h3><p>2x per week yoga sessions dramatically improve mobility, balance, and body awareness. Even 20-minute sessions compound significantly over time. Focus: Warrior sequences, pigeon, downward dog, hip openers.</p></div>
+      </div>
+    </div>
+
+    <!-- ACTIVE RECOVERY -->
+    <div id="tab-active" class="tab-content">
+      <div class="section-title">ACTIVE <span>RECOVERY</span></div>
+      <div class="divider"></div>
+      <p style="color:var(--muted);margin-bottom:2.5rem;line-height:1.8;max-width:800px;font-size:0.98rem">Active recovery means deliberate low-intensity movement on rest days. It increases blood flow to sore muscles — flushing out metabolic waste and delivering nutrients for tissue repair — without creating additional muscle damage or systemic fatigue.</p>
+      <div class="grid-auto">
+        <div class="rec-card"><div class="rec-icon">🚶</div><h3>Walking</h3><p>The most underrated recovery tool available. 20–40 minutes at a conversational pace. Increases blood flow, accelerates fat oxidation, reduces cortisol, and improves insulin sensitivity. Do this every rest day without exception.</p></div>
+        <div class="rec-card"><div class="rec-icon">🚴</div><h3>Light Cycling</h3><p>15–30 minutes at 50–60% max HR. Excellent leg recovery after heavy lower body sessions. The circular motion promotes joint lubrication without eccentric muscle damage — unlike running.</p></div>
+        <div class="rec-card"><div class="rec-icon">🏊</div><h3>Swimming</h3><p>Full-body active recovery. Water provides natural resistance and compression simultaneously. 20–30 minutes easy laps. Ideal for sore joints, back pain, or overuse injuries — zero impact.</p></div>
+        <div class="rec-card"><div class="rec-icon">🧘</div><h3>Yoga / Mobility Flow</h3><p>60-minute restorative yoga session. Focus on hip openers, thoracic mobility, and hamstring lengthening. Doubles as active recovery and flexibility training in a single session.</p></div>
+        <div class="rec-card"><div class="rec-icon">🌡️</div><h3>Contrast Therapy</h3><p>Alternating hot (3 min) and cold (1 min) — sauna/hot shower to cold shower or ice bath. 3–5 rounds. Reduces inflammation, clears lactic acid, boosts recovery hormones. Used by elite athletes worldwide.</p></div>
+        <div class="rec-card"><div class="rec-icon">💆</div><h3>Sports Massage</h3><p>Weekly professional massage targets adhesions and trigger points that foam rolling misses. Between sessions, use a massage gun (Theragun/Hypervolt) 10–15 min daily on sore areas for significant relief.</p></div>
+      </div>
+    </div>
+
+    <!-- DELOAD -->
+    <div id="tab-deload" class="tab-content">
+      <div class="section-title">DELOAD <span>WEEK GUIDE</span></div>
+      <div class="divider"></div>
+      <p style="color:var(--muted);margin-bottom:2.5rem;line-height:1.8;max-width:800px;font-size:0.98rem">A deload is a planned period of reduced training volume and intensity. Every 4–8 weeks, your body needs a lower-stress week to allow supercompensation — the physiological process where you recover from accumulated fatigue and come back genuinely stronger than before the deload began.</p>
+      <div class="grid-auto">
+        <div class="rec-card"><div class="rec-icon">📉</div><h3>Volume Deload</h3><p>Keep intensity (weight on bar) the same. Reduce sets by 50%. If you normally do 5 sets per exercise, do 2–3. Maintains neuromuscular patterns and movement quality while allowing full tissue recovery.</p></div>
+        <div class="rec-card"><div class="rec-icon">🔽</div><h3>Intensity Deload</h3><p>Keep training volume the same, reduce weight by 40–50%. Use when joints feel beat up. Focus on perfect form and mind-muscle connection at lighter loads. Excellent for technique refinement.</p></div>
+        <div class="rec-card"><div class="rec-icon">🏖️</div><h3>Full Rest Week</h3><p>Complete rest from structured lifting. Ideal after a competition, extended travel, illness, or exceptional accumulation of physical stress. Walk, swim, do yoga — nothing more than Zone 1 activity.</p></div>
+        <div class="rec-card"><div class="rec-icon">📅</div><h3>When to Deload</h3><p>Schedule every 4–8 weeks OR trigger by these signs: motivation drops consistently, weights feel heavier than usual, sleep is disrupted despite good habits, joints ache, mood is persistently low.</p></div>
+        <div class="rec-card"><div class="rec-icon">🔄</div><h3>What To Do During</h3><p>Light cardio, full mobility sessions, foam rolling, restorative yoga. Review your training log. Plan the next training block. Prioritize sleep (9+ hours) and calorie-appropriate nutrition for full recovery.</p></div>
+        <div class="rec-card"><div class="rec-icon">🚀</div><h3>After the Deload</h3><p>Expect clear performance improvements: more reps at the same weight, new 1RM, sharper mind-muscle connection, better mood. This supercompensation effect is the entire scientific basis of periodized training.</p></div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div id="tab-tools" class="tab-content">
+      <div class="section-title">RECOVERY <span>TOOLS</span></div>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.25rem">
+        <div class="supp-card"><h4>🔫 Massage Gun</h4><p>Theragun, Hypervolt. 2–3 min per muscle group. Use before training for activation, after for soreness reduction. High-frequency percussion breaks adhesions faster than foam rolling.</p></div>
+        <div class="supp-card"><h4>🥶 Ice Bath</h4><p>10–15°C water, 10–15 min. Reduces acute inflammation and DOMS. Avoid within 4 hours post-strength training — blunts hypertrophy signaling. Best 6+ hours after lifting or on rest days.</p></div>
+        <div class="supp-card"><h4>🧖 Sauna</h4><p>80–100°C, 20–30 min, 3–4x/week. Mimics cardio adaptation, releases heat shock proteins, boosts GH by up to 200%. Dramatically improves cardiovascular health and longevity biomarkers.</p></div>
+        <div class="supp-card"><h4>⌚ HRV Monitor</h4><p>WHOOP, Polar H10, Garmin. Daily HRV measurement tells you objectively whether to push hard or recover. The most data-driven recovery tool available to athletes today.</p></div>
+        <div class="supp-card"><h4>🧢 Compression Gear</h4><p>Compression socks/tights post-exercise. Reduces blood pooling, speeds venous return, decreases DOMS by 20–30%. Wear for 2–4 hours post-workout or overnight for maximum benefit.</p></div>
+        <div class="supp-card"><h4>🌊 Normatec Boots</h4><p>Pneumatic compression used by elite athletes and sports teams. 20–30 min sessions dramatically flush waste products and improve leg circulation. Game-changing for high-frequency trainers.</p></div>
+        <div class="supp-card"><h4>📏 Foam Roller</h4><p>5–10 minutes pre and post workout. Priority: thoracic spine, IT band, hip flexors, calves, lats. Vibrating versions provide enhanced myofascial release over standard rollers.</p></div>
+        <div class="supp-card"><h4>🎯 Lacrosse Ball</h4><p>Pinpoint trigger point release. Glutes, shoulders, traps, calves, plantar fascia. 60–90 sec on each tight spot. More precise than a foam roller for specific stubborn knots.</p></div>
+        <div class="supp-card"><h4>🌡️ Heating Pad</h4><p>Applied to chronically tight areas (hip flexors, lower traps, calves) for 15–20 min before stretching. Heat increases tissue extensibility — dramatically improving stretch effectiveness.</p></div>
+        <div class="supp-card"><h4>💉 Epsom Salt Bath</h4><p>2 cups Epsom salt in warm bath for 20 min. Magnesium is absorbed transdermally. Reduces muscle soreness, promotes relaxation, and improves sleep quality when done in the evening.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness | <a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a></p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+<script>
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

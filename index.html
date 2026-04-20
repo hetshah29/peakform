@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PeakForm – Elite Fitness Platform</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 65% 50%, rgba(255,61,0,0.13) 0%, transparent 70%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,61,0,0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,61,0,0.055) 1px, transparent 1px);
+  background-size: 65px 65px;
+}
+.hero-image {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+.hero-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(30%) contrast(1.1);
+  opacity: 0.55;
+}
+.hero-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--bg) 0%, transparent 50%);
+  z-index: 1;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 6%;
+  max-width: 680px;
+}
+.hero-eyebrow {
+  display: inline-block;
+  background: rgba(255,61,0,0.14);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  line-height: 0.92;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+.hero h1 .red { color: var(--accent); }
+.hero p {
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.75;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  max-width: 480px;
+}
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-stats {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 3.5rem;
+  flex-wrap: wrap;
+}
+.stat-pill {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1.4rem;
+  text-align: center;
+}
+.stat-pill .n {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.8rem;
+  color: var(--accent);
+  line-height: 1;
+  display: block;
+}
+.stat-pill .l {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+/* ── FEATURES ── */
+.features { padding: 5rem 6% 4rem; }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.feature-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 2rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  transition: all 0.3s;
+  border-left: 4px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: radial-gradient(circle, rgba(255,61,0,0.1) 0%, transparent 70%);
+}
+.feature-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(255,61,0,0.15);
+}
+.feature-icon { font-size: 2.2rem; margin-bottom: 1.1rem; }
+.feature-card h3 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.55rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.6rem;
+  color: var(--accent);
+}
+.feature-card p { color: var(--muted); font-size: 0.93rem; line-height: 1.7; }
+.feature-arrow {
+  margin-top: 1.2rem;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ── MUSCLE PREVIEW ── */
+.muscle-preview { padding: 0 6% 5rem; }
+.muscle-scroll {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+@media(max-width:1100px){ .muscle-scroll{grid-template-columns:repeat(4,1fr)} }
+@media(max-width:600px){ .muscle-scroll{grid-template-columns:repeat(2,1fr)} }
+.muscle-thumb {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+}
+.muscle-thumb:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(255,61,0,0.2); }
+.muscle-thumb-img {
+  height: 160px;
+  overflow: hidden;
+  position: relative;
+}
+.muscle-thumb-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(20%) contrast(1.1);
+  transition: transform 0.4s;
+}
+.muscle-thumb:hover .muscle-thumb-img img { transform: scale(1.07); }
+.muscle-thumb-img .overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.85) 100%);
+}
+.muscle-thumb-body { padding: 0.9rem; }
+.muscle-thumb h4 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.muscle-thumb p { color: var(--muted); font-size: 0.78rem; margin-top: 0.2rem; }
+
+/* ── CTA ── */
+.cta-section {
+  padding: 5rem 6%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(255,61,0,0.1) 0%, transparent 70%);
+}
+.cta-section h2 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 1rem;
+}
+.cta-section h2 span { color: var(--accent); }
+.cta-section p { color: var(--muted); font-size: 1.05rem; position: relative; z-index: 1; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80" alt="Elite Fitness">
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">⚡ Elite Fitness Platform</div>
+      <h1>FORGE YOUR<br><span class="red">PEAK</span><br>FORM</h1>
+      <p>Science-backed training, precision nutrition, and expert recovery protocols — everything you need to build the physique you've always wanted.</p>
+      <div class="hero-btns">
+        <a href="challenge.html" class="btn-primary">Start 90-Day Challenge</a>
+        <a href="workout.html" class="btn-secondary">Explore Workouts</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill"><span class="n">90</span><span class="l">Day Program</span></div>
+        <div class="stat-pill"><span class="n">200+</span><span class="l">Exercises</span></div>
+        <div class="stat-pill"><span class="n">8</span><span class="l">Muscle Groups</span></div>
+        <div class="stat-pill"><span class="n">AI</span><span class="l">Professor</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="section-sub">Everything You Need</div>
+    <div class="section-title">YOUR COMPLETE <span>FITNESS</span> ECOSYSTEM</div>
+    <div class="divider"></div>
+    <div class="feature-grid">
+      <a href="workout.html" class="feature-card">
+        <div class="feature-icon">💪</div>
+        <h3>Workout Guides</h3>
+        <p>Complete exercise library for all 8 muscle groups — with bodybuilder photos, form cues, sets, reps, and primary muscle targets.</p>
+        <div class="feature-arrow">EXPLORE WORKOUTS →</div>
+      </a>
+      <a href="diet.html" class="feature-card">
+        <div class="feature-icon">🥗</div>
+        <h3>Nutrition Plans</h3>
+        <p>Custom macro calculations, full meal plans for bulking, cutting, and maintenance — real food, real results.</p>
+        <div class="feature-arrow">VIEW NUTRITION →</div>
+      </a>
+      <a href="recovery.html" class="feature-card">
+        <div class="feature-icon">😴</div>
+        <h3>Recovery Science</h3>
+        <p>Sleep protocols, stretching routines, active recovery, contrast therapy, and deload strategies to maximize every gain.</p>
+        <div class="feature-arrow">LEARN RECOVERY →</div>
+      </a>
+      <a href="challenge.html" class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>90-Day Challenge</h3>
+        <p>A complete transformation program — day-by-day workouts across 3 progressive phases that build muscle, strength, and conditioning.</p>
+        <div class="feature-arrow">START CHALLENGE →</div>
+      </a>
+      <a href="#" onclick="openAI(); return false;" class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Professor</h3>
+        <p>Your personal AI fitness coach — ask anything about training, nutrition, form, or recovery. Powered by advanced AI. Always available.</p>
+        <div class="feature-arrow">ASK PROFESSOR →</div>
+      </a>
+      <a href="about.html" class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>About PeakForm</h3>
+        <p>Built by athletes, backed by science. Learn our mission, values, and the team committed to your transformation.</p>
+        <div class="feature-arrow">OUR STORY →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- MUSCLE PREVIEWS -->
+  <section class="muscle-preview">
+    <div class="section-sub">Choose Your Target</div>
+    <div class="section-title">TRAIN EVERY <span>MUSCLE GROUP</span></div>
+    <div class="divider"></div>
+    <div class="muscle-scroll">
+      <a href="workout.html#chest" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&q=80" alt="Chest">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Chest</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#back" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1603287681836-b174ce5074c2?w=400&q=80" alt="Back">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Back</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#shoulders" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1532029837206-abbe2b7620e3?w=400&q=80" alt="Shoulders">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Shoulders</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#biceps" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1581009137042-c552e485697a?w=400&q=80" alt="Biceps">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Biceps</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#triceps" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=400&q=80" alt="Triceps">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Triceps</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#legs" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=400&q=80" alt="Legs">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Legs</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#abs" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80" alt="Abs">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Abs & Core</h4><p>8 exercises</p></div>
+      </a>
+      <a href="workout.html#glutes" class="muscle-thumb">
+        <div class="muscle-thumb-img">
+          <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=400&q=80" alt="Glutes">
+          <div class="overlay"></div>
+        </div>
+        <div class="muscle-thumb-body"><h4>Glutes</h4><p>8 exercises</p></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <h2>READY TO REACH YOUR <span>PEAK?</span></h2>
+    <p>90 days. 3 phases. One complete transformation. Are you in?</p>
+    <a href="challenge.html" class="btn-primary">START THE 90-DAY CHALLENGE</a>
+  </section>
+
+  <footer>
+    <div class="foot-brand">PEAKFORM</div>
+    <p>© 2025 PeakForm Fitness. All rights reserved.</p>
+    <p><a href="mailto:hetshah29062@gmail.com">hetshah29062@gmail.com</a></p>
+  </footer>
+</div>
+
+<script src="nav.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
